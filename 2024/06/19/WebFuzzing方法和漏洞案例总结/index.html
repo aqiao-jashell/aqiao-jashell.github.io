@@ -1,0 +1,806 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="CNAQ">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="0x00  前言	WEB应用模糊测试（WEB Fuzz）是一种特殊形式的网络协议模糊测试，专门关注遵循HTTP规范的网络数据包。 在Fuzz请求完成后，目标应用发回来的响应提供了Fuzz请求所造成影响的各种线索。如果发现了异常，就可以确定于异常相关的请求。下面总结了一些响应信息，这些响应信息可能指示漏洞条件的存在：  HTML状态码 响应中的错误信息 响应中包含的用户输入 性能下降 请求超时 WE">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WebFuzzing方法和漏洞案例总结">
+<meta property="og:url" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="一只鲶鱼">
+<meta property="og:description" content="0x00  前言	WEB应用模糊测试（WEB Fuzz）是一种特殊形式的网络协议模糊测试，专门关注遵循HTTP规范的网络数据包。 在Fuzz请求完成后，目标应用发回来的响应提供了Fuzz请求所造成影响的各种线索。如果发现了异常，就可以确定于异常相关的请求。下面总结了一些响应信息，这些响应信息可能指示漏洞条件的存在：  HTML状态码 响应中的错误信息 响应中包含的用户输入 性能下降 请求超时 WE">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/001.png">
+<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/002.png">
+<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/003.png">
+<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/004.png">
+<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/005.png">
+<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/006.png">
+<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/007.png">
+<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/008.png">
+<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/009.png">
+<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/010.png">
+<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/011.png">
+<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/012.png">
+<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/013.png">
+<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/014.png">
+<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/015.png">
+<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/016.png">
+<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/017.png">
+<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/018.png">
+<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/019.png">
+<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/020.png">
+<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/021.png">
+<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/022.png">
+<meta property="article:published_time" content="2024-06-19T07:18:10.000Z">
+<meta property="article:modified_time" content="2024-06-19T07:30:59.927Z">
+<meta property="article:author" content="CNAQ">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/001.png">
+  
+  
+  
+  <title>WebFuzzing方法和漏洞案例总结 - 一只鲶鱼</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>一只鲶鱼</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="WebFuzzing方法和漏洞案例总结"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-06-19 15:18" pubdate>
+          2024年6月19日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          22 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">WebFuzzing方法和漏洞案例总结</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00  前言"></a><strong>0x00  前言</strong></h2><p><code>	</code>WEB应用模糊测试（WEB Fuzz）是一种特殊形式的<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE&spm=1001.2101.3001.7020">网络协议</a>模糊测试，专门关注遵循HTTP规范的网络数据包。</p>
+<p>在Fuzz请求完成后，目标应用发回来的响应提供了Fuzz请求所造成影响的各种线索。如果发现了异常，就可以确定于异常相关的请求。下面总结了一些响应信息，这些响应信息可能指示漏洞条件的存在：</p>
+<ul>
+<li>HTML状态码</li>
+<li>响应中的错误信息</li>
+<li>响应中包含的用户输入</li>
+<li>性能下降</li>
+<li>请求超时</li>
+<li>WEB Fuzzer错误信息</li>
+<li>处理或者未处理的异常</li>
+</ul>
+<h2 id="0x01-响应信息详细"><a href="#0x01-响应信息详细" class="headerlink" title="0x01  响应信息详细"></a><strong>0x01  响应信息详细</strong></h2><ul>
+<li>HTML状态码</li>
+</ul>
+<p>HTML状态码是一种重要信息，它提供了快速判断对应的请求是成功还是失败的指示。因此，WEB Fuzzer解析原始响应，得到状态码，然后在一个显示响应详细信息的列表中将其单独展示出来。通过THML状态码信息，用户能够快速确定需要进一步详细检查的响应部分。</p>
+<ul>
+<li>响应中的错误信息</li>
+</ul>
+<p>从设计上来说，WEB服务器一般都会在动态生成的网页中包含错误信息。如果一个WEB服务器在生产环节中启动不当，启用了调试功能，就会发生这种情 况。以下是一个典型的透露了太懂信息的例子：当验证错误时，WEB应用给出的错误信息是“密码不正确”而不是“用户或密码不正确”。如果攻击者试图通过暴 力方法强行破解某个WEB应用的登陆密页面，“密码不正确”的错误消息就会告诉攻击者输入的用户名存在，只是密码不正确。这使得未知参数有两个（用户名和 密码）减少为一个（密码），极大地增加了攻击者进入系统的可能。在识别SQL注入攻击时，应用的错误信息同样特别有用。</p>
+<ul>
+<li>响应中包含的用户输入</li>
+</ul>
+<p>如果动态生成的WEB页面包含用户输入的数据，就有可能产生XSS漏洞。WEB应用的设计者应当过滤用户的输入，以确保不会发生这类攻击。但 是，WEB应用没有进行核实的过滤是个常见的问题。因此，如果在HTML响应信息中找到了WEB Fuzzer提供的数据，那就表面应当测试应用中的XSS漏洞。</p>
+<ul>
+<li>性能下降</li>
+</ul>
+<p>尽管通过其表现形式（直接的应用崩溃），我们很容易识别DoS攻击，但DoS漏洞则微妙得多。性能下降通常表明应用可能易于收到Dos攻击。请求超时是一种发现性能下降的方法，但是在Fuzz的过程中，还应当使用血能监视器检查问题，如过高的CPU使用率或内存使用率。</p>
+<ul>
+<li>请求超时</li>
+</ul>
+<p>参考上一条，不能忽视请求超时，因为它们可能表示存在临时或者永久的Dos条件。</p>
+<ul>
+<li>WEB Fuzzer错误信息</li>
+</ul>
+<p>WEB Fuzzer有它子的错误处理方式，当某些特定函数执行失败时，它会弹出错误信息。例如，如果目标服务器因为前一个Fuzz请求而线下，WEB Fuzzer可能会给出一个错误信息，表明无法链接到目标服务器。这意味着可能发生了DoS攻击。</p>
+<ul>
+<li>处理或未被处理的异常</li>
+</ul>
+<p>当对WEB应用进行Fuzz时，可能会在应用本身以及它运行的服务器上都发现漏洞。因此，监视服务器多的状态也很重要。尽管WEB服务器返回的响应 信息为我们提供了发现潜在漏洞的信息，但它们并没有揭示全部问题。如果输入稍加变化，Fuzz请求极可能会导致处理或未被处理的异常，从而导致可被利用的 条件。因此，在Fuzz过程中，建议在目标WEB服务器上连接一个单独的调试器，这样就能够识别这些异常，比如FileFuzz和COMRaider，都 带有内置的调试功能。WEB Fuzzer并不需要调试功能呢，因为WEB Fuzzer不需要反复地启动和中止一个应用。我们的方法是向某个Web应用发送一系列的fuzz请求，服务器会持续运行并相应这些请求，并阻止导致 Dos的输入。</p>
+<h2 id="0x02-漏洞案例"><a href="#0x02-漏洞案例" class="headerlink" title="0x02  漏洞案例"></a><strong>0x02  漏洞案例</strong></h2><p>其中涉及的一些漏洞可能无法作为Fuzzing归类，这里也进行了强行的归类，只是想告诉大家漏洞挖掘中思路发散的重要性，个人也觉得比较经典。</p>
+<p>Fuzz针对一部分网站可以扫描的全面，只要你的字典足够强大就可以扫描到绝大多部分的目录和文件，以下是个人和网上搜集和整理的字典库。</p>
+<p>个人搜集的字典：</p>
+<img src="/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/001.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>网上搜集的字典：</p>
+<img src="/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/002.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p><strong>注：</strong> 漏洞案例进行了脱敏以及细节上的修改</p>
+<ul>
+<li><strong>[SQLi注入漏洞]</strong></li>
+</ul>
+<p>1.获得项目子域：<a target="_blank" rel="noopener" href="https://xxx.com/">https://xxx.com</a></p>
+<p>2.目录扫描发现&#x2F;user&#x2F;目录，二层探测发现&#x2F;register接口，其意为：“注册”</p>
+<img src="/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/003.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>3.根据返回状态信息去Fuzz用户名、密码参数-&gt;结果：uname\pwd</p>
+<p>4.对uname参数进行SQL注入测试，简单的逻辑判断存在</p>
+<p>5.注入点使用16进制的方式无法注入，SQLmap参数–no-escape即可绕过</p>
+<img src="/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/004.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<ul>
+<li><strong>[拒绝服务]图片验证码</strong></li>
+</ul>
+<p>图片验证码DoS（拒绝服务攻击）这个思路很早就出来了，当时的第一想法就是采集样本收集参数，使用搜索引擎寻找存在图片验证码的点：</p>
+<img src="/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/005.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>根据这些点写了个脚本进行半自动的参数收集：</p>
+<img src="/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/006.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>在漏洞挖掘的过程中，经常会抓取图片验证码的请求进行Fuzz：</p>
+<p>图片验证码地址：<a target="_blank" rel="noopener" href="https://xxx/validateCode">https://xxx/validateCode</a> </p>
+<img src="/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/007.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>Fuzz存在潜藏参数，可控验证码生成大小：</p>
+<img src="/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/008.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<ul>
+<li><strong>[JSONP]无中生有</strong></li>
+</ul>
+<p>获得一个敏感信息返回的请求端点：<a target="_blank" rel="noopener" href="http://xxx/getInfo">http://xxx/getInfo</a></p>
+<p>使用callback_dict.txt字典进行Fuzz</p>
+<img src="/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/009.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>成功发现callback这个潜藏参数</p>
+<img src="/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/010.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<ul>
+<li><strong>[逻辑漏洞]响应变请求</strong></li>
+</ul>
+<p>这里同样是获得一个敏感信息返回的请求端点：<a target="_blank" rel="noopener" href="http://xxx/getInfo">http://xxx/getInfo</a></p>
+<p>返回的信息如下所示：</p>
+<p>{“responseData”:{“userid”:”user_id”,”login”:”user_name”,”password”:”user_password”,”mobilenum”:”user_mobilephone_number”,”mobileisbound”:”01”,”email”:”user_email_address”}}</p>
+<p>尝试了一些测试思路都无法发现安全漏洞，于是想到了响应变请求思路</p>
+<p>将响应报文的JSON字段内容转化为HTTP请求的字段内容（BurpSuite插件项目：<a target="_blank" rel="noopener" href="https://github.com/gh0stkey/JSONandHTTPP%EF%BC%89%EF%BC%9A">https://github.com/gh0stkey/JSONandHTTPP）：</a></p>
+<img src="/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/011.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>将相关的信息字段内容替换为测试账号B的信息（例如：login&#x3D;A -&gt; login&#x3D;B）</p>
+<p>发现无法得到预期的越权漏洞，并尝试分析该网站其他请求接口对应的参数，发现都为大写，将之前的参数转换为大写</p>
+<img src="/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/012.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>继续Fuzz，结果却出人意料达到了预期</p>
+<img src="/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/013.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<ul>
+<li><strong>[逻辑漏洞]命名规律修改</strong></li>
+</ul>
+<p>一个登录系统，跟踪JS文件发现了一些登录后的系统接口，找到其中的注册接口成功注册账户进入个人中心，用户管理处抓到如下请求：</p>
+<p>POST URL: <a target="_blank" rel="noopener" href="https://xxx/getRolesByUserId">https://xxx/getRolesByUserId</a></p>
+<p>POST Data: userId&#x3D;1028</p>
+<p>返回如下信息：</p>
+<img src="/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/014.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>可以看见这里的信息并不敏感，但根据测试发现userId参数可以进行越权遍历</p>
+<p>根据url判断这个请求的意思是根据用户id查看用户的身份，url中的驼峰方法(getRolesByUserId)惊醒了我，根据命名规则结构我将其修改成getUserByUserId，也就是根据用户id获取用户，也就成为了如下请求包</p>
+<p>POST URL: <a target="_blank" rel="noopener" href="https://xxx/getUserByUserId">https://xxx/getUserByUserId</a></p>
+<p>POST Data: userId&#x3D;1028</p>
+<img src="/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/015.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>成功返回了敏感信息，并通过修改userId可以越权获取其他用户的信息</p>
+<ul>
+<li><strong>[逻辑漏洞]敏感的嗅觉</strong></li>
+</ul>
+<p>在测一个刚上线的APP时获得这样一条请求：</p>
+<p><strong>POST</strong> &#x2F;mvc&#x2F;h5&#x2F;jd&#x2F;mJSFHttpGWP **HTTP&#x2F;**1.1……</p>
+<p>param&#x3D;{“userPin”:”$Uid$”,”addressType”:0}</p>
+<p>而这个请求返回的信息较为敏感，返回了个人的一些物理地址信息</p>
+<img src="/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/016.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>在这里param参数是json格式的，其中”userPin”:”$Uid$”引起我注意，敏感的直觉告诉我这里可以进行修改，尝试将$Uid$修改为其他用户的用户名、用户ID，成功越权：</p>
+<img src="/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/017.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<ul>
+<li><strong>[逻辑漏洞]熟能生巧</strong></li>
+</ul>
+<p>收到一个项目邀请，全篇就一个后台管理系统。针对这个系统做了一些常规的测试之后除了发现一些 没用的弱口令外(无法登录系统的)没有了其他收获。</p>
+<p>分析这个后台管理系统的URL:<a target="_blank" rel="noopener" href="https://xxx/?m=index%EF%BC%8C%E8%AF%A5URL%E8%AE%BF%E9%97%AE%E8%A7%A3%E6%9E%90%E8%BF%87%E6%9D%A5">https://xxx/?m=index，该URL访问解析过来</a> 的是主⻚信息。</p>
+<p>尝试对请求参数m的值进行Fuzz，7K+的字典进行Fuzz，一段时间之后收获降临</p>
+<img src="/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/018.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>获得了一个有用的请求:?m&#x3D;view，该请求可以直接未授权获取信息</p>
+<img src="/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/019.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<ul>
+<li><strong>[逻辑漏洞]Token限制绕过</strong></li>
+</ul>
+<p>在测业务的密码重置功能，发送密码重置请求，邮箱收到一个重置密码的链接：<a target="_blank" rel="noopener" href="http://xxx/forget/pwd?userid=123&token=xxxx">http://xxx/forget/pwd?userid=123&amp;token=xxxx</a></p>
+<p>这时候尝试删除token请求参数，再访问并成功重置了用户的密码：</p>
+<img src="/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/020.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<ul>
+<li><strong>[SQLi辅助]参数删除报错</strong></li>
+</ul>
+<p>挖掘到一处注入，发现是root（DBA）权限：</p>
+<img src="/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/021.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>但这时候，找不到网站绝对路径，寻找网站用户交互的请求<a target="_blank" rel="noopener" href="http://xxx/xxxsearch?name=123%EF%BC%8C%E5%88%A0%E9%99%A4name=123%EF%BC%8C%E7%BD%91%E7%AB%99%E6%8A%A5%E9%94%99%E8%8E%B7%E5%8F%96%E7%BB%9D%E5%AF%B9%E8%B7%AF%E5%BE%84%EF%BC%9A">http://xxx/xxxsearch?name=123，删除name=123，网站报错获取绝对路径：</a></p>
+<img src="/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/022.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>成功通过SQLi漏洞进行GetWebshell</p>
+
+
+<ul>
+<li><strong>字典收集：</strong></li>
+</ul>
+<p>BurpCollector(BurpSuite参数收集插件)：<a target="_blank" rel="noopener" href="https://github.com/TEag1e/BurpCollector">https://github.com/TEag1e/BurpCollector</a></p>
+<p>Fuzz字典：<a target="_blank" rel="noopener" href="https://github.com/TheKingOfDuck/fuzzDicts">https://github.com/TheKingOfDuck/fuzzDicts</a></p>
+<ul>
+<li><strong>借助平台</strong></li>
+</ul>
+<p>1.依靠Github收集：<a target="_blank" rel="noopener" href="https://github.com/search?q=%22$%5C_GET%22&type=Code">https://github.com/search?q=%22%24\_GET%22&amp;type=Code</a></p>
+<p>2.借助zoomeye、fofa等平台收集</p>
+<h2 id="0x03-总结"><a href="#0x03-总结" class="headerlink" title="0x03  总结"></a><strong>0x03  总结</strong></h2><p>核心其实还是在于漏洞挖掘时的心细，一件事情理解透彻之后万物皆可Fuzz！</p>
+<p>平时注意字典的更新、整理和对实际情况的分析，再进行关联整合。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>WebFuzzing方法和漏洞案例总结</div>
+      <div>http://example.com/2024/06/19/WebFuzzing方法和漏洞案例总结/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>CNAQ</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年6月19日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/06/19/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/" title="php代码审计基础">
+                        <span class="hidden-mobile">php代码审计基础</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
