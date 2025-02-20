@@ -16,12 +16,12 @@
   <meta name="author" content="CNAQ">
   <meta name="keywords" content="">
   
-    <meta name="description" content="0x00  前言此笔记仅为作者学习及工作记录。什么是内网渗透：内网是一个只有组织工作人员才能访问的专用网络，简而言之就是不可简单地通过外部公网ip进行访问到的公司内部网络。对于一个大型公司的网络系统，通过信息收集找到网站漏洞可以顺利通过公网进入公司内部网络时，进一步对公司内部网络的渗透攻击即为内网渗透。 与外网渗透区别：1、外网渗透更侧重于找漏洞寻找突破口，考验的是白帽的综合能力，外网渗透的最终还">
+    <meta name="description" content="0x00  前言此笔记仅为作者学习及工作记录。什么是内网渗透：– 内网是一个只有组织工作人员才能访问的专用网络，简而言之就是不可简单地通过外部公网ip进行访问到的公司内部网络。对于一个大型公司的网络系统，通过信息收集找到网站漏洞可以顺利通过公网进入公司内部网络时，进一步对公司内部网络的渗透攻击即为内网渗透。 与外网渗透区别：1、外网渗透更侧重于找漏洞寻找突破口，考验的是白帽的综合能力，外网渗透的最">
 <meta property="og:type" content="article">
 <meta property="og:title" content="内网渗透总结">
 <meta property="og:url" content="http://example.com/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/index.html">
 <meta property="og:site_name" content="一只鲶鱼">
-<meta property="og:description" content="0x00  前言此笔记仅为作者学习及工作记录。什么是内网渗透：内网是一个只有组织工作人员才能访问的专用网络，简而言之就是不可简单地通过外部公网ip进行访问到的公司内部网络。对于一个大型公司的网络系统，通过信息收集找到网站漏洞可以顺利通过公网进入公司内部网络时，进一步对公司内部网络的渗透攻击即为内网渗透。 与外网渗透区别：1、外网渗透更侧重于找漏洞寻找突破口，考验的是白帽的综合能力，外网渗透的最终还">
+<meta property="og:description" content="0x00  前言此笔记仅为作者学习及工作记录。什么是内网渗透：– 内网是一个只有组织工作人员才能访问的专用网络，简而言之就是不可简单地通过外部公网ip进行访问到的公司内部网络。对于一个大型公司的网络系统，通过信息收集找到网站漏洞可以顺利通过公网进入公司内部网络时，进一步对公司内部网络的渗透攻击即为内网渗透。 与外网渗透区别：1、外网渗透更侧重于找漏洞寻找突破口，考验的是白帽的综合能力，外网渗透的最">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/001.png">
 <meta property="og:image" content="http://example.com/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/002.png">
@@ -74,7 +74,7 @@
 <meta property="og:image" content="http://example.com/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/049.png">
 <meta property="og:image" content="http://example.com/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/050.png">
 <meta property="article:published_time" content="2024-07-26T04:00:11.000Z">
-<meta property="article:modified_time" content="2025-02-20T03:24:44.778Z">
+<meta property="article:modified_time" content="2025-02-20T03:25:51.987Z">
 <meta property="article:author" content="CNAQ">
 <meta property="article:tag" content="内网渗透">
 <meta name="twitter:card" content="summary_large_image">
@@ -324,7 +324,7 @@
             
               <div class="markdown-body">
                 
-                <h2 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00  前言"></a><strong>0x00  前言</strong></h2><h2 id="此笔记仅为作者学习及工作记录。"><a href="#此笔记仅为作者学习及工作记录。" class="headerlink" title="此笔记仅为作者学习及工作记录。"></a>此笔记仅为作者学习及工作记录。</h2><h6 id="什么是内网渗透："><a href="#什么是内网渗透：" class="headerlink" title="什么是内网渗透："></a><strong>什么是内网渗透：</strong></h6><p>内网是一个只有组织工作人员才能访问的专用网络，简而言之就是不可简单地通过外部公网ip进行访问到的公司内部网络。对于一个大型公司的网络系统，通过信息收集找到网站漏洞可以顺利通过公网进入公司内部网络时，进一步对公司内部网络的渗透攻击即为内网渗透。</p>
+                <h2 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00  前言"></a><strong>0x00  前言</strong></h2><h2 id="此笔记仅为作者学习及工作记录。"><a href="#此笔记仅为作者学习及工作记录。" class="headerlink" title="此笔记仅为作者学习及工作记录。"></a>此笔记仅为作者学习及工作记录。</h2><h6 id="什么是内网渗透："><a href="#什么是内网渗透：" class="headerlink" title="什么是内网渗透："></a><strong>什么是内网渗透：</strong></h6><p>– 内网是一个只有组织工作人员才能访问的专用网络，简而言之就是不可简单地通过外部公网ip进行访问到的公司内部网络。对于一个大型公司的网络系统，通过信息收集找到网站漏洞可以顺利通过公网进入公司内部网络时，进一步对公司内部网络的渗透攻击即为内网渗透。</p>
 <h3 id="与外网渗透区别："><a href="#与外网渗透区别：" class="headerlink" title="与外网渗透区别："></a>与外网渗透区别：</h3><p>1、外网渗透更侧重于找漏洞寻找突破口，考验的是白帽的综合能力，外网渗透的最终还是为了进入内网。</p>
 <p>2、内网渗透更侧重于对目标的熟悉程度，对环境是否足够熟悉？对目标的情况是否了然于胸？哪里有敏感信息等等。</p>
 <h3 id="内网渗透分类："><a href="#内网渗透分类：" class="headerlink" title="内网渗透分类："></a>内网渗透分类：</h3><p>内网渗透分为域渗透和工作组渗透两类，亦分为域环境渗透和非域环境渗透。</p>
