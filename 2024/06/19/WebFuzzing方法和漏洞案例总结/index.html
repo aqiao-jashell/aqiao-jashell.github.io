@@ -19,38 +19,38 @@
     <meta name="description" content="0x00  前言	WEB应用模糊测试（WEB Fuzz）是一种特殊形式的网络协议模糊测试，专门关注遵循HTTP规范的网络数据包。 在Fuzz请求完成后，目标应用发回来的响应提供了Fuzz请求所造成影响的各种线索。如果发现了异常，就可以确定于异常相关的请求。下面总结了一些响应信息，这些响应信息可能指示漏洞条件的存在：  HTML状态码 响应中的错误信息 响应中包含的用户输入 性能下降 请求超时 WE">
 <meta property="og:type" content="article">
 <meta property="og:title" content="WebFuzzing方法和漏洞案例总结">
-<meta property="og:url" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:url" content="http://aqiao-jashell.github.io/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/index.html">
 <meta property="og:site_name" content="一只鲶鱼">
 <meta property="og:description" content="0x00  前言	WEB应用模糊测试（WEB Fuzz）是一种特殊形式的网络协议模糊测试，专门关注遵循HTTP规范的网络数据包。 在Fuzz请求完成后，目标应用发回来的响应提供了Fuzz请求所造成影响的各种线索。如果发现了异常，就可以确定于异常相关的请求。下面总结了一些响应信息，这些响应信息可能指示漏洞条件的存在：  HTML状态码 响应中的错误信息 响应中包含的用户输入 性能下降 请求超时 WE">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/001.png">
-<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/002.png">
-<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/003.png">
-<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/004.png">
-<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/005.png">
-<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/006.png">
-<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/007.png">
-<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/008.png">
-<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/009.png">
-<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/010.png">
-<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/011.png">
-<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/012.png">
-<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/013.png">
-<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/014.png">
-<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/015.png">
-<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/016.png">
-<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/017.png">
-<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/018.png">
-<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/019.png">
-<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/020.png">
-<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/021.png">
-<meta property="og:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/022.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/001.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/002.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/003.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/004.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/005.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/006.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/007.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/008.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/009.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/010.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/011.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/012.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/013.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/014.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/015.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/016.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/017.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/018.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/019.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/020.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/021.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/022.png">
 <meta property="article:published_time" content="2024-06-19T07:18:10.000Z">
 <meta property="article:modified_time" content="2025-03-05T06:39:04.326Z">
 <meta property="article:author" content="CNAQ">
 <meta property="article:tag" content="web渗透">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/001.png">
+<meta name="twitter:image" content="http://aqiao-jashell.github.io/2024/06/19/WebFuzzing%E6%96%B9%E6%B3%95%E5%92%8C%E6%BC%8F%E6%B4%9E%E6%A1%88%E4%BE%8B%E6%80%BB%E7%BB%93/001.png">
   
   
   
@@ -92,7 +92,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"aqiao-jashell.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -515,7 +515,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>WebFuzzing方法和漏洞案例总结</div>
-      <div>http://example.com/2024/06/19/WebFuzzing方法和漏洞案例总结/</div>
+      <div>http://aqiao-jashell.github.io/2024/06/19/WebFuzzing方法和漏洞案例总结/</div>
     </div>
     <div class="license-meta">
       

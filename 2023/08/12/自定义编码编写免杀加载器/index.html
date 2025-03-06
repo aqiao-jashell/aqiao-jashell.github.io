@@ -19,31 +19,31 @@
     <meta name="description" content="0x00  前言前两天看到github上有个开源的go语言免杀加载器的项目，在源代码中分析原理：发现该项目中的加密方式、参数、顺序可控，于是尝试编写自定义的一套编码方式来加载shellcode。Golang小白，大佬们轻喷~ 0x01  分析加载器项目首先sparrow.go通过调用cmd.go将cs生成的.bin文件或者.c文件中的shellcode	进行多层加密，（加密参数、顺序可控）；">
 <meta property="og:type" content="article">
 <meta property="og:title" content="自定义编码编写免杀加载器">
-<meta property="og:url" content="http://example.com/2023/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E7%A0%81%E7%BC%96%E5%86%99%E5%85%8D%E6%9D%80%E5%8A%A0%E8%BD%BD%E5%99%A8/index.html">
+<meta property="og:url" content="http://aqiao-jashell.github.io/2023/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E7%A0%81%E7%BC%96%E5%86%99%E5%85%8D%E6%9D%80%E5%8A%A0%E8%BD%BD%E5%99%A8/index.html">
 <meta property="og:site_name" content="一只鲶鱼">
 <meta property="og:description" content="0x00  前言前两天看到github上有个开源的go语言免杀加载器的项目，在源代码中分析原理：发现该项目中的加密方式、参数、顺序可控，于是尝试编写自定义的一套编码方式来加载shellcode。Golang小白，大佬们轻喷~ 0x01  分析加载器项目首先sparrow.go通过调用cmd.go将cs生成的.bin文件或者.c文件中的shellcode	进行多层加密，（加密参数、顺序可控）；">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2023/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E7%A0%81%E7%BC%96%E5%86%99%E5%85%8D%E6%9D%80%E5%8A%A0%E8%BD%BD%E5%99%A8/001.png">
-<meta property="og:image" content="http://example.com/2023/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E7%A0%81%E7%BC%96%E5%86%99%E5%85%8D%E6%9D%80%E5%8A%A0%E8%BD%BD%E5%99%A8/002.png">
-<meta property="og:image" content="http://example.com/2023/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E7%A0%81%E7%BC%96%E5%86%99%E5%85%8D%E6%9D%80%E5%8A%A0%E8%BD%BD%E5%99%A8/003.png">
-<meta property="og:image" content="http://example.com/2023/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E7%A0%81%E7%BC%96%E5%86%99%E5%85%8D%E6%9D%80%E5%8A%A0%E8%BD%BD%E5%99%A8/004.png">
-<meta property="og:image" content="http://example.com/2023/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E7%A0%81%E7%BC%96%E5%86%99%E5%85%8D%E6%9D%80%E5%8A%A0%E8%BD%BD%E5%99%A8/005.png">
-<meta property="og:image" content="http://example.com/2023/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E7%A0%81%E7%BC%96%E5%86%99%E5%85%8D%E6%9D%80%E5%8A%A0%E8%BD%BD%E5%99%A8/006.png">
-<meta property="og:image" content="http://example.com/2023/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E7%A0%81%E7%BC%96%E5%86%99%E5%85%8D%E6%9D%80%E5%8A%A0%E8%BD%BD%E5%99%A8/007.png">
-<meta property="og:image" content="http://example.com/2023/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E7%A0%81%E7%BC%96%E5%86%99%E5%85%8D%E6%9D%80%E5%8A%A0%E8%BD%BD%E5%99%A8/008.png">
-<meta property="og:image" content="http://example.com/2023/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E7%A0%81%E7%BC%96%E5%86%99%E5%85%8D%E6%9D%80%E5%8A%A0%E8%BD%BD%E5%99%A8/009.png">
-<meta property="og:image" content="http://example.com/2023/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E7%A0%81%E7%BC%96%E5%86%99%E5%85%8D%E6%9D%80%E5%8A%A0%E8%BD%BD%E5%99%A8/010.png">
-<meta property="og:image" content="http://example.com/2023/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E7%A0%81%E7%BC%96%E5%86%99%E5%85%8D%E6%9D%80%E5%8A%A0%E8%BD%BD%E5%99%A8/011.png">
-<meta property="og:image" content="http://example.com/2023/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E7%A0%81%E7%BC%96%E5%86%99%E5%85%8D%E6%9D%80%E5%8A%A0%E8%BD%BD%E5%99%A8/012.png">
-<meta property="og:image" content="http://example.com/2023/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E7%A0%81%E7%BC%96%E5%86%99%E5%85%8D%E6%9D%80%E5%8A%A0%E8%BD%BD%E5%99%A8/013.png">
-<meta property="og:image" content="http://example.com/2023/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E7%A0%81%E7%BC%96%E5%86%99%E5%85%8D%E6%9D%80%E5%8A%A0%E8%BD%BD%E5%99%A8/014.png">
-<meta property="og:image" content="http://example.com/2023/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E7%A0%81%E7%BC%96%E5%86%99%E5%85%8D%E6%9D%80%E5%8A%A0%E8%BD%BD%E5%99%A8/015.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E7%A0%81%E7%BC%96%E5%86%99%E5%85%8D%E6%9D%80%E5%8A%A0%E8%BD%BD%E5%99%A8/001.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E7%A0%81%E7%BC%96%E5%86%99%E5%85%8D%E6%9D%80%E5%8A%A0%E8%BD%BD%E5%99%A8/002.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E7%A0%81%E7%BC%96%E5%86%99%E5%85%8D%E6%9D%80%E5%8A%A0%E8%BD%BD%E5%99%A8/003.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E7%A0%81%E7%BC%96%E5%86%99%E5%85%8D%E6%9D%80%E5%8A%A0%E8%BD%BD%E5%99%A8/004.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E7%A0%81%E7%BC%96%E5%86%99%E5%85%8D%E6%9D%80%E5%8A%A0%E8%BD%BD%E5%99%A8/005.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E7%A0%81%E7%BC%96%E5%86%99%E5%85%8D%E6%9D%80%E5%8A%A0%E8%BD%BD%E5%99%A8/006.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E7%A0%81%E7%BC%96%E5%86%99%E5%85%8D%E6%9D%80%E5%8A%A0%E8%BD%BD%E5%99%A8/007.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E7%A0%81%E7%BC%96%E5%86%99%E5%85%8D%E6%9D%80%E5%8A%A0%E8%BD%BD%E5%99%A8/008.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E7%A0%81%E7%BC%96%E5%86%99%E5%85%8D%E6%9D%80%E5%8A%A0%E8%BD%BD%E5%99%A8/009.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E7%A0%81%E7%BC%96%E5%86%99%E5%85%8D%E6%9D%80%E5%8A%A0%E8%BD%BD%E5%99%A8/010.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E7%A0%81%E7%BC%96%E5%86%99%E5%85%8D%E6%9D%80%E5%8A%A0%E8%BD%BD%E5%99%A8/011.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E7%A0%81%E7%BC%96%E5%86%99%E5%85%8D%E6%9D%80%E5%8A%A0%E8%BD%BD%E5%99%A8/012.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E7%A0%81%E7%BC%96%E5%86%99%E5%85%8D%E6%9D%80%E5%8A%A0%E8%BD%BD%E5%99%A8/013.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E7%A0%81%E7%BC%96%E5%86%99%E5%85%8D%E6%9D%80%E5%8A%A0%E8%BD%BD%E5%99%A8/014.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E7%A0%81%E7%BC%96%E5%86%99%E5%85%8D%E6%9D%80%E5%8A%A0%E8%BD%BD%E5%99%A8/015.png">
 <meta property="article:published_time" content="2023-08-12T01:38:31.000Z">
 <meta property="article:modified_time" content="2025-03-05T06:38:48.414Z">
 <meta property="article:author" content="CNAQ">
 <meta property="article:tag" content="免杀">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/2023/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E7%A0%81%E7%BC%96%E5%86%99%E5%85%8D%E6%9D%80%E5%8A%A0%E8%BD%BD%E5%99%A8/001.png">
+<meta name="twitter:image" content="http://aqiao-jashell.github.io/2023/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E7%A0%81%E7%BC%96%E5%86%99%E5%85%8D%E6%9D%80%E5%8A%A0%E8%BD%BD%E5%99%A8/001.png">
   
   
   
@@ -85,7 +85,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"aqiao-jashell.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -430,7 +430,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>自定义编码编写免杀加载器</div>
-      <div>http://example.com/2023/08/12/自定义编码编写免杀加载器/</div>
+      <div>http://aqiao-jashell.github.io/2023/08/12/自定义编码编写免杀加载器/</div>
     </div>
     <div class="license-meta">
       

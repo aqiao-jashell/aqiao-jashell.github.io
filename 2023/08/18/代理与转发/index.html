@@ -19,7 +19,7 @@
     <meta name="description" content="0x00  前言 渗透测试中，为了发现内网资产的脆弱性，暴露更大的攻击面，往往需要搭建代理通道，在外网中实现对内网系统的访问。 进入内网后，为突破内网网络边界隔离，同样需要搭建多层代理，实现从dmz等入口边界网络向生产网、核心网、办公网等靶标所在网络的跨越。 在多层网络隔离的情况下，为了实现对更深层次网络的访问，往往需要在最深处搭建代理，同时结合端口转发技术实现网络跨越。 网络环境中只允许指定端口">
 <meta property="og:type" content="article">
 <meta property="og:title" content="代理与转发">
-<meta property="og:url" content="http://example.com/2023/08/18/%E4%BB%A3%E7%90%86%E4%B8%8E%E8%BD%AC%E5%8F%91/index.html">
+<meta property="og:url" content="http://aqiao-jashell.github.io/2023/08/18/%E4%BB%A3%E7%90%86%E4%B8%8E%E8%BD%AC%E5%8F%91/index.html">
 <meta property="og:site_name" content="一只鲶鱼">
 <meta property="og:description" content="0x00  前言 渗透测试中，为了发现内网资产的脆弱性，暴露更大的攻击面，往往需要搭建代理通道，在外网中实现对内网系统的访问。 进入内网后，为突破内网网络边界隔离，同样需要搭建多层代理，实现从dmz等入口边界网络向生产网、核心网、办公网等靶标所在网络的跨越。 在多层网络隔离的情况下，为了实现对更深层次网络的访问，往往需要在最深处搭建代理，同时结合端口转发技术实现网络跨越。 网络环境中只允许指定端口">
 <meta property="og:locale" content="zh_CN">
@@ -69,7 +69,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"aqiao-jashell.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -667,7 +667,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>代理与转发</div>
-      <div>http://example.com/2023/08/18/代理与转发/</div>
+      <div>http://aqiao-jashell.github.io/2023/08/18/代理与转发/</div>
     </div>
     <div class="license-meta">
       

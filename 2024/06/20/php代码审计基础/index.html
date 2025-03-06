@@ -19,41 +19,41 @@
     <meta name="description" content="0x00  前言代码审计指的是对源代码进行检查，寻找代码中的bug以及安全缺陷(漏洞)。本文章主要是PHP代码审计的一些基础知识，包括函数的用法，漏洞点，偏向基础部分，先记住一句话”一切存在用户输入的地方都有可能存在漏洞”。 0x01  代码执行代码执行是代码审计当中较为严重的漏洞，主要是一些命令执行函数的不适当使用。那么，常见的能够触发这类漏洞的函数有哪些呢？  eval()  想必大家对eva">
 <meta property="og:type" content="article">
 <meta property="og:title" content="php代码审计基础">
-<meta property="og:url" content="http://example.com/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:url" content="http://aqiao-jashell.github.io/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/index.html">
 <meta property="og:site_name" content="一只鲶鱼">
 <meta property="og:description" content="0x00  前言代码审计指的是对源代码进行检查，寻找代码中的bug以及安全缺陷(漏洞)。本文章主要是PHP代码审计的一些基础知识，包括函数的用法，漏洞点，偏向基础部分，先记住一句话”一切存在用户输入的地方都有可能存在漏洞”。 0x01  代码执行代码执行是代码审计当中较为严重的漏洞，主要是一些命令执行函数的不适当使用。那么，常见的能够触发这类漏洞的函数有哪些呢？  eval()  想必大家对eva">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/001.png">
-<meta property="og:image" content="http://example.com/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/002.png">
-<meta property="og:image" content="http://example.com/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/003.png">
-<meta property="og:image" content="http://example.com/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/004.png">
-<meta property="og:image" content="http://example.com/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/005.png">
-<meta property="og:image" content="http://example.com/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/006.png">
-<meta property="og:image" content="http://example.com/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/007.png">
-<meta property="og:image" content="http://example.com/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/008.png">
-<meta property="og:image" content="http://example.com/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/009.png">
-<meta property="og:image" content="http://example.com/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/010.png">
-<meta property="og:image" content="http://example.com/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/011.png">
-<meta property="og:image" content="http://example.com/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/012.png">
-<meta property="og:image" content="http://example.com/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/013.png">
-<meta property="og:image" content="http://example.com/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/014.png">
-<meta property="og:image" content="http://example.com/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/015.png">
-<meta property="og:image" content="http://example.com/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/016.png">
-<meta property="og:image" content="http://example.com/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/017.png">
-<meta property="og:image" content="http://example.com/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/018.png">
-<meta property="og:image" content="http://example.com/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/019.png">
-<meta property="og:image" content="http://example.com/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/020.png">
-<meta property="og:image" content="http://example.com/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/021.png">
-<meta property="og:image" content="http://example.com/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/022.png">
-<meta property="og:image" content="http://example.com/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/023.png">
-<meta property="og:image" content="http://example.com/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/024.png">
-<meta property="og:image" content="http://example.com/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/025.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/001.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/002.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/003.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/004.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/005.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/006.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/007.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/008.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/009.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/010.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/011.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/012.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/013.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/014.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/015.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/016.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/017.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/018.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/019.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/020.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/021.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/022.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/023.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/024.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/025.png">
 <meta property="article:published_time" content="2024-06-20T06:21:43.000Z">
 <meta property="article:modified_time" content="2025-03-05T06:44:48.667Z">
 <meta property="article:author" content="CNAQ">
 <meta property="article:tag" content="代码审计">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/001.png">
+<meta name="twitter:image" content="http://aqiao-jashell.github.io/2024/06/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/001.png">
   
   
   
@@ -95,7 +95,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"aqiao-jashell.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -1164,7 +1164,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>php代码审计基础</div>
-      <div>http://example.com/2024/06/20/php代码审计基础/</div>
+      <div>http://aqiao-jashell.github.io/2024/06/20/php代码审计基础/</div>
     </div>
     <div class="license-meta">
       
