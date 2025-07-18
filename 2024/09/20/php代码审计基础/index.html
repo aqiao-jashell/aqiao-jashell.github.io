@@ -49,7 +49,7 @@
 <meta property="og:image" content="http://aqiao-jashell.github.io/2024/09/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/024.png">
 <meta property="og:image" content="http://aqiao-jashell.github.io/2024/09/20/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80/025.png">
 <meta property="article:published_time" content="2024-09-20T06:21:43.000Z">
-<meta property="article:modified_time" content="2025-07-02T06:01:07.200Z">
+<meta property="article:modified_time" content="2025-07-18T01:25:16.874Z">
 <meta property="article:author" content="CNAQ">
 <meta property="article:tag" content="代码审计">
 <meta name="twitter:card" content="summary_large_image">
@@ -854,7 +854,7 @@
 <p>代码示例：</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-variable">$file</span> = <span class="hljs-title function_ invoke__">fopen</span>(<span class="hljs-string">&quot;demo.html&quot;</span>,<span class="hljs-string">&quot;r&quot;</span>);<br><span class="hljs-keyword">echo</span> <span class="hljs-title function_ invoke__">fgetss</span>(<span class="hljs-variable">$file</span>);<br><span class="hljs-title function_ invoke__">fclose</span>(<span class="hljs-variable">$file</span>);<br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
 
-<p>demo.html代码<h1>demo</h1></p>
+<p>demo.html代码demo</p>
 <p>执行结果——&gt;</p>
 <p>demo</p>
 <ul>
