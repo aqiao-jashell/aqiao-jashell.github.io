@@ -1,0 +1,1312 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="CNAQ">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Java代码审计基础知识「二」– java WEB基础-img1、Java web – Servlet技术123456789JavaWeb应⽤由⼀组Servlet、HTML⻚、类【实体】、以及其它可以被绑定的资源构成。它可以在各种供应商提供的实现Servlet规范的 Servlet容器 中运⾏--Java Web应⽤中可以包含如下内容:ServletJSP ---java server page">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java代码审计基础知识「二」-java-web基础">
+<meta property="og:url" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="一只鲶鱼">
+<meta property="og:description" content="Java代码审计基础知识「二」– java WEB基础-img1、Java web – Servlet技术123456789JavaWeb应⽤由⼀组Servlet、HTML⻚、类【实体】、以及其它可以被绑定的资源构成。它可以在各种供应商提供的实现Servlet规范的 Servlet容器 中运⾏--Java Web应⽤中可以包含如下内容:ServletJSP ---java server page">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/Java-web1.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/Java-web2.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/Java-web3.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/Java-web4.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat1.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat2.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat3.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat4.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat5.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat6.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat7.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat8.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat9.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat9.1.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat10.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat11.1.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat11.2.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat12.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat13.1.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat13.2.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat13.3.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat14.1.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat14.2.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat14.3.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat15.1.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat15.2.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat15.3.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat15.4.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat15.5.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/servlet1.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/servlet2.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/servlet4.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/servlet5.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/servlet6.1.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/servlet6.2.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/servlet7.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/servlet8.1.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/servlet8.2.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/servlet8.3.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/servlet8.4.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/servlet8.5.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/servlet8.6.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/servlet8.7.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/jsp1.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/MVC-1.png">
+<meta property="og:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/filter-1.png">
+<meta property="article:published_time" content="2025-08-15T05:44:04.000Z">
+<meta property="article:modified_time" content="2025-08-15T05:50:06.106Z">
+<meta property="article:author" content="CNAQ">
+<meta property="article:tag" content="代码审计">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://aqiao-jashell.github.io/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/Java-web1.png">
+  
+  
+  
+  <title>Java代码审计基础知识「二」-java-web基础 - 一只鲶鱼</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"aqiao-jashell.github.io","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"uOGt77jvpFaYohTodQumjdZC-gzGzoHsz","app_key":"31Yh2ERJg2UAciRs4CWKtJTr","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>一只鲶鱼</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Java代码审计基础知识「二」-java-web基础"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-08-15 13:44" pubdate>
+          2025年8月15日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          37 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Java代码审计基础知识「二」-java-web基础</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Java代码审计基础知识「二」–-java-WEB基础-img"><a href="#Java代码审计基础知识「二」–-java-WEB基础-img" class="headerlink" title="Java代码审计基础知识「二」– java WEB基础-img"></a>Java代码审计基础知识「二」– java WEB基础-img</h1><h2 id="1、Java-web-–-Servlet技术"><a href="#1、Java-web-–-Servlet技术" class="headerlink" title="1、Java web – Servlet技术"></a>1、Java web – Servlet技术</h2><figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc"><span class="hljs-section">JavaWeb应⽤由⼀组Servlet、HTML⻚、类【实体】、以及其它可以被绑定的资源构成。它可以在各种供应商提供的实现Servlet规范的 Servlet容器 中运⾏</span><br><span class="hljs-section">--</span><br>Java Web应⽤中可以包含如下内容:<br>Servlet<br>JSP ---java server page <br>实⽤类-------ORM（object Relational model）(对象映射模型)<br>静态⽂档如HTML、图⽚等<br>描述Web应⽤的信息（web.xml）(java web项⽬的配置⽂<br>件)<br></code></pre></td></tr></table></figure>
+
+<h3 id="tomcat配置文件："><a href="#tomcat配置文件：" class="headerlink" title="tomcat配置文件："></a>tomcat配置文件：</h3><img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/Java-web1.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<h3 id="HttpServletRequest-简介（重点1）（重点都在这儿，特别是4）"><a href="#HttpServletRequest-简介（重点1）（重点都在这儿，特别是4）" class="headerlink" title="HttpServletRequest 简介（重点1）（重点都在这儿，特别是4）"></a>HttpServletRequest 简介（重点1）（重点都在这儿，特别是4）</h3><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs scss">Servlet API 中定义的 ServletRequest 接⼝类⽤于封装请求消息。<br>HttpServletRequest 是专⽤于HTTP协议的ServletRequest⼦接⼝，它⽤于封装 HTTP 请求消息。<br>在 <span class="hljs-built_in">service</span>() ⽅法内部调⽤ HttpServletRequest 对象的各种⽅法来获取请求消息。<br></code></pre></td></tr></table></figure>
+
+<h4 id="1、获取请求⾏的相关信息"><a href="#1、获取请求⾏的相关信息" class="headerlink" title="1、获取请求⾏的相关信息"></a>1、获取请求⾏的相关信息</h4><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs routeros">● HTTP请求消息的请求⾏包括请求⽅式、资源路径和HTTP协议版本：<br><span class="hljs-built_in">GET</span> /lampbrother/servlet/RequestURI?<span class="hljs-attribute">param1</span>=a&amp;param2=b HTTP/1.1 <br><br>● getMethod：返回HTTP请求消息中的请求⽅式。<br>● getRequestURI：返回请求⾏中的资源名部分。<br>● getQueryString ：返回请求⾏中的参数部分。<br>● getProtocol：返回请求⾏中的协议名和版本。<br>● getContextPath：返回请求资源所属于的WEB应⽤程序的路径。<br>● getPathInfo：返回请求URL中的额外路径信息。额外路径信息是请求URL中的位于Servlet的路径之后和查询参数之前的内容，它以“/”开头。<br>● getPathTranslated：返回URL中的额外路径信息所对应的资源的真实路径。<br>● getServletPath⽅法：Servlet的名称或Servlet所映射的路径。<br></code></pre></td></tr></table></figure>
+
+<h4 id="2、获取⽹络连接信息"><a href="#2、获取⽹络连接信息" class="headerlink" title="2、获取⽹络连接信息"></a>2、获取⽹络连接信息</h4><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver">● getRemoteAddr⽅法返回发出请求的客户机的IP地址，其格式为“<span class="hljs-number">192.168</span><span class="hljs-number">.0</span><span class="hljs-number">.3</span>”这种形式的字符⽂本。 （*）<br>● getRemoteHost⽅法返回发出请求的客户机的完整主机名，即“pc1.atguigu.com”这种格式。<br>● getRemotePort⽅法返回发出请求的客户机所使⽤的⽹络接⼝的端⼝号。<br>● getLocalAddr⽅法返回WEB服务器上接收当前请求的⽹络接⼝的IP地址。<br>● getLocalName⽅法返回WEB服务器上接收当前请求的⽹络接⼝的IP地址所对应的主机名。<br>● getLocalPort⽅法返回WEB服务器上接收当前请求的⽹络接⼝的端⼝号。<br>● getServerName⽅法返回当前请求所指向的主机名。<br>● getServerPort⽅法返回当前请求所连接的服务器端⼝号。<br>● getScheme⽅法返回请求的协议名，例如<span class="hljs-keyword">http</span>、<span class="hljs-keyword">https</span>或<span class="hljs-keyword">ftp</span>。<br>● getRequestURL⽅法返回客户端发出请求时的完整<span class="hljs-built_in">URL</span>。<br></code></pre></td></tr></table></figure>
+
+<h4 id="3、获取请求头信息"><a href="#3、获取请求头信息" class="headerlink" title="3、获取请求头信息"></a>3、获取请求头信息</h4><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs">● getHeader⽅法<br>● getHeaders⽅法<br>● getHeaderNames⽅法<br>● getIntHeader⽅法<br>● getDateHeader⽅法<br>● getContentType⽅法<br>● getContentLength⽅法<br>● getCharacterEncoding⽅法<br></code></pre></td></tr></table></figure>
+
+<h4 id="4、获取请求参数（非常之重点）"><a href="#4、获取请求参数（非常之重点）" class="headerlink" title="4、获取请求参数（非常之重点）"></a>4、获取请求参数（非常之重点）</h4><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs">● getParameter⽅法<br>● getParameterValues⽅法<br>● getParameterNames⽅法<br>● getParameterMap⽅法<br></code></pre></td></tr></table></figure>
+
+<h4 id="5、请求域属性"><a href="#5、请求域属性" class="headerlink" title="5、请求域属性"></a>5、请求域属性</h4><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">● 存储在ServletRequest对象中的对象称之为请求域属性，属于同⼀个请求的多个处理模块之间可以通过请求域属性来传递对象数据。<br>● 与请求域属性相关的⽅法：<br>	<span class="hljs-keyword">set</span>Attribute⽅法<br>	getAttribute⽅法<br>	removeAttribute⽅法<br>	getAttributeNames⽅法<br></code></pre></td></tr></table></figure>
+
+<h3 id="HttpServletResponse简介"><a href="#HttpServletResponse简介" class="headerlink" title="HttpServletResponse简介"></a>HttpServletResponse简介</h3><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs rust">● Serv<span class="hljs-keyword">let</span> <span class="hljs-variable">API</span>中定义的ServletResponse接⼝类⽤于创建响应消息。<br>● HttpServletResponse是专⽤于HTTP协议的ServletResponse⼦接⼝，它⽤于封装HTTP响应消息<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="2、搭建Java-web环境"><a href="#2、搭建Java-web环境" class="headerlink" title="2、搭建Java web环境"></a>2、搭建Java web环境</h2><figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs crystal">下载tomcat：<br><span class="hljs-symbol">https:</span>/<span class="hljs-regexp">/tomcat.apache.org/download</span>-<span class="hljs-number">90</span>.cgi<br>启动tomcat：运行：<br><span class="hljs-regexp">/tomcat/bin</span><span class="hljs-regexp">/startup.sh</span><br><span class="hljs-regexp">访问：http:/</span><span class="hljs-regexp">/127.0.0.1:8080/</span><br>如果能够打开 Tomcat 配置页面，则说明 Tomcat 配置成功：<br>关闭tomcat：运行：<br><span class="hljs-regexp">/tomcat/bin</span><span class="hljs-regexp">/shutdown.sh</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="在-Tomcat-中新建-Web-工程"><a href="#在-Tomcat-中新建-Web-工程" class="headerlink" title="在 Tomcat 中新建 Web 工程"></a>在 Tomcat 中新建 Web 工程</h3><figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs gams">① 找到 Tomcat 目录下的 webapps 目录。 <br>② 在 webapps 目录下新建一个目录： first_webapp。<br>③ 在 first_webapp 中建立一个目录： WEB-<span class="hljs-literal">INF</span>。（注意大小写，WEB 和 <span class="hljs-literal">INF</span> 之间为横线） <br>④ 将上面的下载文件下载下来以后，将提供的 web.xml 文件复制到 WEB-<span class="hljs-literal">INF</span> 目录中。 <br>⑤ 将提供的 index.html 文件复制到 first_webapp 目录下。 <br>⑥ 启动 Tomcat。<br>⑦ 在浏览器中输入网址：http:<span class="hljs-comment">//localhose:8080/first_webapp ，查看是否能够正确访问，如果可以正确显示页面，则表示 Tomcat 中创建新项目成功。</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="Tomcat路由访问"><a href="#Tomcat路由访问" class="headerlink" title="Tomcat路由访问"></a>Tomcat路由访问</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">项目运行流程：在tomcat配置文件中的conf/web.xml配置文件中配置路由，如下图：<br></code></pre></td></tr></table></figure>
+
+<img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/Java-web2.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/Java-web3.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<h4 id="–-在tomcat目录下创建web项目"><a href="#–-在tomcat目录下创建web项目" class="headerlink" title="– 在tomcat目录下创建web项目"></a>– 在tomcat目录下创建web项目</h4><figure class="highlight mel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs mel">随后在tomcat的目录：webapps/ROOT下新建test.jsp文件，文件内容如下：<br><br>&lt;%@ page contentType=<span class="hljs-string">&quot;text/html;charset=UTF-8&quot;</span> %&gt;<br>&lt;%<br>out.<span class="hljs-keyword">print</span>(<span class="hljs-string">&quot;hello world&quot;</span>);<br>%&gt;<br>随后访问http:<span class="hljs-comment">//127.0.0.1:8080/test.jsp</span><br></code></pre></td></tr></table></figure>
+
+<img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/Java-web4.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<h4 id="–-在项目下创建web项目"><a href="#–-在项目下创建web项目" class="headerlink" title="– 在项目下创建web项目"></a>– 在项目下创建web项目</h4><h5 id="1、首先，创建一个普通的java项目。点击【file】-【new】-【project】"><a href="#1、首先，创建一个普通的java项目。点击【file】-【new】-【project】" class="headerlink" title="1、首先，创建一个普通的java项目。点击【file】-【new】-【project】"></a>1、首先，创建一个普通的java项目。点击【file】-【new】-【project】</h5><img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat1.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<h5 id="2、创建如下图"><a href="#2、创建如下图" class="headerlink" title="2、创建如下图"></a>2、创建如下图</h5><img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat2.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<h5 id="3、添加web部门。点击【file】-【project-structure】"><a href="#3、添加web部门。点击【file】-【project-structure】" class="headerlink" title="3、添加web部门。点击【file】-【project structure】"></a>3、添加web部门。点击【file】-【project structure】</h5><img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat3.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<h5 id="4、选择【modules】-选中项目“TomcatDemo”"><a href="#4、选择【modules】-选中项目“TomcatDemo”" class="headerlink" title="4、选择【modules】-选中项目“TomcatDemo”"></a>4、选择【modules】-选中项目“TomcatDemo”</h5><img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat4.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<h5 id="5、点击项目名上的加号【-】，添加【web】模块"><a href="#5、点击项目名上的加号【-】，添加【web】模块" class="headerlink" title="5、点击项目名上的加号【+】，添加【web】模块"></a>5、点击项目名上的加号【+】，添加【web】模块</h5><img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat5.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<h5 id="6、我们就会发现项目下多出了web模块"><a href="#6、我们就会发现项目下多出了web模块" class="headerlink" title="6、我们就会发现项目下多出了web模块"></a>6、我们就会发现项目下多出了web模块</h5><img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat6.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<h5 id="7、展开web包，在web包下创建一个index-jsp文件，在WEB-INF下创建classes和lib两个文件夹，如下图："><a href="#7、展开web包，在web包下创建一个index-jsp文件，在WEB-INF下创建classes和lib两个文件夹，如下图：" class="headerlink" title="7、展开web包，在web包下创建一个index.jsp文件，在WEB-INF下创建classes和lib两个文件夹，如下图："></a>7、展开web包，在web包下创建一个index.jsp文件，在WEB-INF下创建classes和lib两个文件夹，如下图：</h5><img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat7.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<h5 id="8、点击【File】-【Project-structure】-【Modules】-选中项目名【TomcatDemo】-【Paths】-勾选【use-module-compile-output-path】-将output-path设置为我们刚才创建的classes文件夹即可"><a href="#8、点击【File】-【Project-structure】-【Modules】-选中项目名【TomcatDemo】-【Paths】-勾选【use-module-compile-output-path】-将output-path设置为我们刚才创建的classes文件夹即可" class="headerlink" title="8、点击【File】-【Project structure】-【Modules】-选中项目名【TomcatDemo】-【Paths】-勾选【use module compile output path】-将output path设置为我们刚才创建的classes文件夹即可"></a>8、点击【File】-【Project structure】-【Modules】-选中项目名【TomcatDemo】-【Paths】-勾选【use module compile output path】-将output path设置为我们刚才创建的classes文件夹即可</h5><img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat8.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<h5 id="9、点击【dependencies】-点击加号【-】-添加【JARs-or-directories】-选中Tomcat的lib目录"><a href="#9、点击【dependencies】-点击加号【-】-添加【JARs-or-directories】-选中Tomcat的lib目录" class="headerlink" title="9、点击【dependencies】-点击加号【+】-添加【JARs or directories】-选中Tomcat的lib目录"></a>9、点击【dependencies】-点击加号【+】-添加【JARs or directories】-选中Tomcat的lib目录</h5><img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat9.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat9.1.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<h5 id="10、点击【Current-File】-选择【edit-configurations】"><a href="#10、点击【Current-File】-选择【edit-configurations】" class="headerlink" title="10、点击【Current File】-选择【edit configurations】"></a>10、点击【Current File】-选择【edit configurations】</h5><img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat10.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<h5 id="11、点击【edit-configuration-templates】-导入tomcat-配置如图2，点击OK"><a href="#11、点击【edit-configuration-templates】-导入tomcat-配置如图2，点击OK" class="headerlink" title="11、点击【edit configuration templates】-导入tomcat 配置如图2，点击OK"></a>11、点击【edit configuration templates】-导入tomcat 配置如图2，点击OK</h5><img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat11.1.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat11.2.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<h5 id="12、然后再点击左上角加号【-】添加Tomcat-local-–配置如下"><a href="#12、然后再点击左上角加号【-】添加Tomcat-local-–配置如下" class="headerlink" title="12、然后再点击左上角加号【+】添加Tomcat-local –配置如下"></a>12、然后再点击左上角加号【+】添加Tomcat-local –配置如下</h5><img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat12.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<h5 id="13、如果下面有warning提示，则点击fix，如图1，如果没有，则选择文件-项目结构-工件，然后如图2选择"><a href="#13、如果下面有warning提示，则点击fix，如图1，如果没有，则选择文件-项目结构-工件，然后如图2选择" class="headerlink" title="13、如果下面有warning提示，则点击fix，如图1，如果没有，则选择文件-项目结构-工件，然后如图2选择"></a>13、如果下面有warning提示，则点击fix，如图1，如果没有，则选择文件-项目结构-工件，然后如图2选择</h5><img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat13.1.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat13.2.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat13.3.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<h5 id="14、点击确定后，然后回到-编辑配置-部署-点击-号，选择工件，点击确定"><a href="#14、点击确定后，然后回到-编辑配置-部署-点击-号，选择工件，点击确定" class="headerlink" title="14、点击确定后，然后回到  编辑配置-部署 点击+号，选择工件，点击确定"></a>14、点击确定后，然后回到  编辑配置-部署 点击+号，选择工件，点击确定</h5><img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat14.1.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat14.2.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat14.3.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<h5 id="15、修改一下创建的index-jsp内容如下，并运行Tomcat"><a href="#15、修改一下创建的index-jsp内容如下，并运行Tomcat" class="headerlink" title="15、修改一下创建的index.jsp内容如下，并运行Tomcat"></a>15、修改一下创建的index.jsp内容如下，并运行Tomcat</h5><img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat15.1.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat15.2.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat15.3.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat15.4.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/tomcat15.5.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<h4 id="–-在项目下创建servlet项目……"><a href="#–-在项目下创建servlet项目……" class="headerlink" title="– 在项目下创建servlet项目……"></a>– 在项目下创建servlet项目……</h4><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">47页，没太懂<br></code></pre></td></tr></table></figure>
+
+<h5 id="1、创建servlet项目"><a href="#1、创建servlet项目" class="headerlink" title="1、创建servlet项目"></a>1、创建servlet项目</h5><img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/servlet1.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<h5 id="2、在工程上右键，选择【Add-Framework-Support】（如果没有的话，按两下shift，搜索添加框架支持，（英文的搜Add-Framework-Support）然后双击）"><a href="#2、在工程上右键，选择【Add-Framework-Support】（如果没有的话，按两下shift，搜索添加框架支持，（英文的搜Add-Framework-Support）然后双击）" class="headerlink" title="2、在工程上右键，选择【Add Framework Support】（如果没有的话，按两下shift，搜索添加框架支持，（英文的搜Add Framework Support）然后双击）"></a>2、在工程上右键，选择【<code>Add Framework Support</code>】（如果没有的话，按两下shift，搜索添加框架支持，（英文的搜Add Framework Support）然后双击）</h5><img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/servlet2.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<h5 id="3、选择web应用程序"><a href="#3、选择web应用程序" class="headerlink" title="3、选择web应用程序"></a>3、选择web应用程序</h5>
+
+<h5 id="4、在-web-WEB-INF-下创建classes和lib文件夹"><a href="#4、在-web-WEB-INF-下创建classes和lib文件夹" class="headerlink" title="4、在&#x2F;web&#x2F;WEB-INF&#x2F;下创建classes和lib文件夹"></a>4、在&#x2F;web&#x2F;WEB-INF&#x2F;下创建classes和lib文件夹</h5><img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/servlet4.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<h5 id="5、配置Project-Structure：在Modules——Path下，修改Compiler-Output，选择Use-module-compile-output-path，修改两个内容框为刚才新建的classes目录，点击OK"><a href="#5、配置Project-Structure：在Modules——Path下，修改Compiler-Output，选择Use-module-compile-output-path，修改两个内容框为刚才新建的classes目录，点击OK" class="headerlink" title="5、配置Project Structure：在Modules——Path下，修改Compiler Output，选择Use module compile output path，修改两个内容框为刚才新建的classes目录，点击OK"></a>5、配置Project Structure：在<code>Modules——Path</code>下，修改<code>Compiler Output</code>，选择<code>Use module compile output path</code>，修改两个内容框为刚才新建的classes目录，点击OK</h5><img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/servlet5.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<h5 id="6、导入servlet-api-jar（也就是tomcat的lib目录）"><a href="#6、导入servlet-api-jar（也就是tomcat的lib目录）" class="headerlink" title="6、导入servlet-api.jar（也就是tomcat的lib目录）"></a>6、导入servlet-api.jar（也就是tomcat的lib目录）</h5><img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/servlet6.1.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/servlet6.2.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<h5 id="7、编写servlet测试–新建ServletDemo1类"><a href="#7、编写servlet测试–新建ServletDemo1类" class="headerlink" title="7、编写servlet测试–新建ServletDemo1类"></a>7、编写servlet测试–新建ServletDemo1类</h5><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs scala"><br><span class="hljs-keyword">import</span> javax.servlet.*;<br><span class="hljs-keyword">import</span> javax.servlet.<span class="hljs-type">ServletException</span>;<br><span class="hljs-keyword">import</span> javax.servlet.http.*;<br><span class="hljs-keyword">import</span> javax.servlet.annotation.*;<br><span class="hljs-keyword">import</span> java.io.<span class="hljs-type">IOException</span>;<br><br><span class="hljs-meta">@WebServlet</span>(name = <span class="hljs-string">&quot;ServletDemo1&quot;</span>, value = <span class="hljs-string">&quot;/ServletDemo1&quot;</span>)<br>public <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ServletDemo1</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">HttpServlet</span> </span>&#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">protected</span> void doGet(<span class="hljs-type">HttpServletRequest</span> request, <span class="hljs-type">HttpServletResponse</span> response) <span class="hljs-keyword">throws</span> <span class="hljs-type">ServletException</span>, <span class="hljs-type">IOException</span> &#123;<br>        response.setCharacterEncoding(<span class="hljs-string">&quot;GBK&quot;</span>);<br>        response.getWriter().println(<span class="hljs-string">&quot;&lt;html&gt;&lt;body&gt;&quot;</span>);<br>        response.getWriter().println(<span class="hljs-string">&quot;&lt;h1&gt;Hello World!&lt;/h1&gt;&quot;</span>);<br>        response.getWriter().println(<span class="hljs-string">&quot;&lt;/body&gt;&lt;/html&gt;&quot;</span>);<br>    &#125;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">protected</span> void doPost(<span class="hljs-type">HttpServletRequest</span> request, <span class="hljs-type">HttpServletResponse</span> response) <span class="hljs-keyword">throws</span> <span class="hljs-type">ServletException</span>, <span class="hljs-type">IOException</span> &#123;<br>        doGet(request, response);<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/servlet7.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<h5 id="8、添加Tomcat执行"><a href="#8、添加Tomcat执行" class="headerlink" title="8、添加Tomcat执行"></a>8、添加Tomcat执行</h5><img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/servlet8.1.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/servlet8.2.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/servlet8.3.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/servlet8.4.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/servlet8.5.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/servlet8.6.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/servlet8.7.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<h2 id="3、JSP语法"><a href="#3、JSP语法" class="headerlink" title="3、JSP语法"></a>3、JSP语法</h2><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">&lt;%<span class="hljs-comment">--</span><br>  Created <span class="hljs-keyword">by</span> IntelliJ IDEA.<br>  <span class="hljs-keyword">User</span>: cnaq<br>  <span class="hljs-type">Date</span>: <span class="hljs-number">2025</span>/<span class="hljs-number">4</span>/<span class="hljs-number">21</span><br>  <span class="hljs-type">Time</span>: 下午<span class="hljs-number">5</span>:<span class="hljs-number">17</span><br>  <span class="hljs-keyword">To</span> change this <span class="hljs-keyword">template</span> use File | Settings | File Templates.<br><span class="hljs-comment">--%&gt;</span><br>&lt;%@ page <span class="hljs-keyword">language</span>=&quot;java&quot; contentType=&quot;text/html; charset=UTF-8&quot; pageEncoding=&quot;UTF-8&quot;%&gt;<br>&lt;html&gt;<br>&lt;head&gt;<br>    &lt;title&gt;life.jsp&lt;/title&gt;<br>&lt;/head&gt;<br>&lt;body&gt;<br>&lt;%!<br>    private <span class="hljs-type">int</span> initVar=<span class="hljs-number">0</span>;<br>    private <span class="hljs-type">int</span> serviceVar=<span class="hljs-number">0</span>;<br>    private <span class="hljs-type">int</span> destroyVar=<span class="hljs-number">0</span>;<br>%&gt;<br><br>&lt;%!<br>    <span class="hljs-built_in">public</span> <span class="hljs-type">void</span> jspInit()&#123;<br>        initVar++;<br>        <span class="hljs-keyword">System</span>.<span class="hljs-keyword">out</span>.println(&quot;jspInit(): JSP被初始化了&quot;+initVar+&quot;次&quot;);<br>    &#125;<br>    <span class="hljs-built_in">public</span> <span class="hljs-type">void</span> jspDestroy()&#123;<br>        destroyVar++;<br>        <span class="hljs-keyword">System</span>.<span class="hljs-keyword">out</span>.println(&quot;jspDestroy(): JSP被销毁了&quot;+destroyVar+&quot;次&quot;);<br>    &#125;<br>%&gt;<br>&lt;%<br>    serviceVar++;<br>    <span class="hljs-keyword">System</span>.<span class="hljs-keyword">out</span>.println(&quot;_jspService(): JSP共响应了&quot;+serviceVar+&quot;次请求&quot;);<br>    String content1=&quot;初始化次数 : &quot;+initVar;<br>    String content2=&quot;响应客户请求次数 : &quot;+serviceVar;<br>    String content3=&quot;销毁次数 : &quot;+destroyVar;<br>%&gt;<br>&lt;h1&gt;测试实例&lt;/h1&gt;<br>&lt;p&gt;&lt;%=content1 %&gt;&lt;/p&gt;<br>&lt;p&gt;&lt;%=content2 %&gt;&lt;/p&gt;<br>&lt;%<br>    <span class="hljs-keyword">out</span>.println(&quot;Hello world!&quot; );<br>%&gt;<br>&lt;p&gt;&lt;%=content3 %&gt;&lt;/p&gt;<br>&lt;/body&gt;<br>&lt;/html&gt;<br></code></pre></td></tr></table></figure>
+
+<img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/jsp1.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<h3 id="3-1、-JSP⾏为"><a href="#3-1、-JSP⾏为" class="headerlink" title="3.1、 JSP⾏为"></a>3.1、 JSP⾏为</h3><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">JSP⾏为标签使⽤<span class="hljs-type">XML</span>语法结构来控制servlet引擎。它能够动态插⼊⼀个⽂件，重⽤JavaBean组件，引导⽤户去另⼀个⻚⾯，为Java插件产⽣相关的HTML等等。<br><br>⾏为标签只有⼀种语法格式，它严格遵守<span class="hljs-type">XML</span>标准：<br>&lt;jsp:action_name <span class="hljs-keyword">attribute</span>=&quot;value&quot; /&gt;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">⾏为标签基本上是⼀些预先就定义好的函数，下表罗列出了⼀些可⽤的JSP⾏为标签：<br></code></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="left">标签</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">jsp:include</td>
+<td>⽤于在当前⻚⾯中包含静态或动态资源</td>
+</tr>
+<tr>
+<td align="left">jsp:useBean</td>
+<td>寻找和初始化⼀个JavaBean组件</td>
+</tr>
+<tr>
+<td align="left">jsp:setProperty</td>
+<td>设置 JavaBean组件的值</td>
+</tr>
+<tr>
+<td align="left">jsp:getProperty</td>
+<td>将 JavaBean组件的值插⼊到output中</td>
+</tr>
+<tr>
+<td align="left">jsp:forward</td>
+<td>从⼀个JSP⽂件向另⼀个⽂件传递⼀个包含⽤户请求的request对象</td>
+</tr>
+<tr>
+<td align="left">jsp:plugin</td>
+<td>⽤于在⽣成的HTML⻚⾯中包含Applet和JavaBean对象</td>
+</tr>
+<tr>
+<td align="left">jsp:element</td>
+<td>动态创建⼀个XML元素</td>
+</tr>
+<tr>
+<td align="left">jsp:attribute</td>
+<td>定义动态创建的XML元素的属性</td>
+</tr>
+<tr>
+<td align="left">jsp:body</td>
+<td>定义动态创建的XML元素的主体</td>
+</tr>
+<tr>
+<td align="left">jsp:text</td>
+<td>⽤于封装模板数据</td>
+</tr>
+</tbody></table>
+<h3 id="3-2、JSP指令"><a href="#3-2、JSP指令" class="headerlink" title="3.2、JSP指令"></a>3.2、JSP指令</h3><figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs gcode">P指令⽤来设置整个JSP⻚⾯相关的属性，如⽹⻚的编码⽅式和脚本语⾔。<br>语法格式如下：<br>&lt;<span class="hljs-meta">%</span>@ directive attribute=<span class="hljs-string">&quot;value&quot;</span> <span class="hljs-meta">%</span>&gt;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">指令可以有很多个属性，它们以键值对的形式存在，并⽤逗号隔开。<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">JSP中的三种指令标签：<br></code></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="left">指令</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">&lt;%@ page … %&gt;</td>
+<td>定义⽹⻚依赖属性，⽐如脚本语⾔、error⻚⾯、缓存需求等等</td>
+</tr>
+<tr>
+<td align="left">&lt;%@ include … %&gt;</td>
+<td>包含其他⽂件</td>
+</tr>
+<tr>
+<td align="left">&lt;%@ taglib … %&gt;</td>
+<td>引⼊标签库的定义</td>
+</tr>
+</tbody></table>
+<h4 id="3-2-1、Page指令"><a href="#3-2-1、Page指令" class="headerlink" title="3.2.1、Page指令"></a>3.2.1、Page指令</h4><figure class="highlight nsis"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs nsis"><span class="hljs-keyword">Page</span>指令为容器提供当前⻚⾯的使⽤说明。⼀个JSP⻚⾯可以包含多个<span class="hljs-keyword">page</span>指令。<br><span class="hljs-keyword">Page</span>指令的语法格式：<br>&lt;%@ <span class="hljs-keyword">page</span> attribute=<span class="hljs-string">&quot;value&quot;</span> %&gt;<br>等价的XML格式：<br>&lt;jsp:directive.<span class="hljs-keyword">page</span> attribute=<span class="hljs-string">&quot;value&quot;</span> /&gt;<br></code></pre></td></tr></table></figure>
+
+<p>下表列出与Page指令相关的属性：</p>
+<table>
+<thead>
+<tr>
+<th align="left">属性</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">buffer</td>
+<td>指定out对象使⽤缓冲区的⼤⼩</td>
+</tr>
+<tr>
+<td align="left">autoFlush</td>
+<td>控制out对象的 缓存区</td>
+</tr>
+<tr>
+<td align="left">contentType</td>
+<td>指定当前JSP⻚⾯的MIME类型和字符编码</td>
+</tr>
+<tr>
+<td align="left">errorPage</td>
+<td>指定当JSP⻚⾯发⽣异常时需要转向的错误处理⻚⾯</td>
+</tr>
+<tr>
+<td align="left">isErrorPage</td>
+<td>指定当前⻚⾯是否可以作为另⼀个JSP⻚⾯的错误处理⻚⾯</td>
+</tr>
+<tr>
+<td align="left">extends</td>
+<td>指定servlet从哪⼀个类继承</td>
+</tr>
+<tr>
+<td align="left">import</td>
+<td>导⼊要使⽤的Java类</td>
+</tr>
+<tr>
+<td align="left">info</td>
+<td>定义JSP⻚⾯的描述信息</td>
+</tr>
+<tr>
+<td align="left">isThreadSafe</td>
+<td>指定对JSP⻚⾯的访问是否为线程安全</td>
+</tr>
+<tr>
+<td align="left">language</td>
+<td>定义JSP⻚⾯所⽤的脚本语⾔，默认是Java</td>
+</tr>
+<tr>
+<td align="left">session</td>
+<td>指定JSP⻚⾯是否使⽤session</td>
+</tr>
+<tr>
+<td align="left">isELIgnored</td>
+<td>指定是否执⾏EL表达式</td>
+</tr>
+<tr>
+<td align="left">isScriptingEnabled</td>
+<td>确定脚本元素能否被使⽤</td>
+</tr>
+</tbody></table>
+<h4 id="3-2-2、Include指令"><a href="#3-2-2、Include指令" class="headerlink" title="3.2.2、Include指令"></a>3.2.2、Include指令</h4><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cmake">JSP可以通过<span class="hljs-keyword">include</span>指令来包含其他⽂件。被包含的⽂件可以是JSP⽂件、HTML⽂件或⽂本⽂件。包含的⽂件就好像是该JSP⽂件的⼀部分，会被同时编译执⾏。<br><span class="hljs-keyword">Include</span>指令的语法格式如下：<br>&lt;%@ <span class="hljs-keyword">include</span> <span class="hljs-keyword">file</span>=<span class="hljs-string">&quot;⽂件相对 url 地址&quot;</span> %&gt;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver"><span class="hljs-built_in">include</span> 指令中的⽂件名实际上是⼀个相对的 <span class="hljs-built_in">URL</span> 地址。<br>如果您没有给⽂件关联⼀个路径，JSP编译器默认在当前路径下寻找。<br>等价的XML语法：<br>&lt;jsp:directive.<span class="hljs-built_in">include</span> <span class="hljs-built_in">file</span>=<span class="hljs-string">&quot;⽂件相对 url 地址&quot;</span> /&gt;<br></code></pre></td></tr></table></figure>
+
+<h4 id="3-2-3、Taglib指令"><a href="#3-2-3、Taglib指令" class="headerlink" title="3.2.3、Taglib指令"></a>3.2.3、Taglib指令</h4><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm"><span class="hljs-keyword">JSP </span>API允许⽤户⾃定义标签，⼀个⾃定义标签库就是⾃定义标签的集合。<br>Taglib指令引⼊⼀个⾃定义标签集合的定义，包括库路径、⾃定义标签。<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs routeros">Taglib指令的语法：<br>&lt;%@ taglib <span class="hljs-attribute">uri</span>=<span class="hljs-string">&quot;uri&quot;</span> <span class="hljs-attribute">prefix</span>=<span class="hljs-string">&quot;prefixOfTag&quot;</span> %&gt;<br>uri属性确定标签库的位置，prefix属性指定标签库的前缀。<br><br>等价的XML语法：<br>&lt;jsp:directive.taglib <span class="hljs-attribute">uri</span>=<span class="hljs-string">&quot;uri&quot;</span> <span class="hljs-attribute">prefix</span>=<span class="hljs-string">&quot;prefixOfTag&quot;</span> /&gt;<br></code></pre></td></tr></table></figure>
+
+<h3 id="3-3、隐式对象"><a href="#3-3、隐式对象" class="headerlink" title="3.3、隐式对象"></a>3.3、隐式对象</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">JSP隐式对象是JSP容器为每个⻚⾯提供的Java对象，开发者可以直接使⽤它们⽽不⽤显式声明。JSP隐式对象也被称为预定义变量。<br></code></pre></td></tr></table></figure>
+
+<p>JSP所⽀持的九⼤隐式对象：</p>
+<table>
+<thead>
+<tr>
+<th align="left">对象</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">request</td>
+<td>HttpServletRequest接口的实例</td>
+</tr>
+<tr>
+<td align="left">response</td>
+<td>HttpServletRespose接口的实例</td>
+</tr>
+<tr>
+<td align="left">out</td>
+<td>JspWriter类的实例，用于把结果输出到网页上</td>
+</tr>
+<tr>
+<td align="left">session</td>
+<td>HttpSession类的实例</td>
+</tr>
+<tr>
+<td align="left">application</td>
+<td>ServletContext类的实例，与应用上下文有关</td>
+</tr>
+<tr>
+<td align="left">config</td>
+<td>ServletConfig类的实例</td>
+</tr>
+<tr>
+<td align="left">pageContext</td>
+<td>PageContext类的实例，提供对JSP⻚⾯所有对象以及命名空间的访问</td>
+</tr>
+<tr>
+<td align="left">page</td>
+<td>类似于Java类中的this关键字</td>
+</tr>
+<tr>
+<td align="left">Exception</td>
+<td>Exception类的对象，代表发⽣错误的JSP⻚⾯中对应的异常对象</td>
+</tr>
+</tbody></table>
+<h3 id="3-4、常⽤的获取HTTP信息头的⽅法"><a href="#3-4、常⽤的获取HTTP信息头的⽅法" class="headerlink" title="3.4、常⽤的获取HTTP信息头的⽅法"></a>3.4、常⽤的获取HTTP信息头的⽅法</h3><table>
+<thead>
+<tr>
+<th align="left">序号</th>
+<th>方法&amp;描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td>Cookie[] getCookies()返回客户端所有的Cookie的数组</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td>Enumeration getAttributeNames()返request对象的所有属性名称的集合</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td>Enumeration getHeaderNames()返回所有HTTP头的名称集合</td>
+</tr>
+<tr>
+<td align="left">4</td>
+<td>Enumeration getParameterNames()返回请求中所有参数的集合</td>
+</tr>
+<tr>
+<td align="left">5</td>
+<td>HttpSession getSession()返回request对应的session对象，如果没有，则创建⼀个</td>
+</tr>
+<tr>
+<td align="left">6</td>
+<td>HttpSession getSession(boolean create)返回request对应的session对象，如果没有并且参数create为true，则返回⼀个新的session对象</td>
+</tr>
+<tr>
+<td align="left">7</td>
+<td>Locale getLocale()返回当前⻚的Locale对象，可以在response中设置</td>
+</tr>
+<tr>
+<td align="left">8</td>
+<td>Object getAttribute(String name)返回名称为name的属性值，如果不存在则返回null。</td>
+</tr>
+<tr>
+<td align="left">9</td>
+<td>ServletInputStream getInputStream()返回请求的输⼊流</td>
+</tr>
+<tr>
+<td align="left">10</td>
+<td>String getAuthType()返回认证⽅案的名称，⽤来保护servlet，⽐如 “BASIC” 或者”SSL” 或 null 如果 JSP没设置保护措施</td>
+</tr>
+<tr>
+<td align="left">11</td>
+<td>String getCharacterEncoding()返回request的字符编码集名称</td>
+</tr>
+<tr>
+<td align="left">12</td>
+<td>String getContentType()返回request主体的MIME类型，若未知则返回null</td>
+</tr>
+<tr>
+<td align="left">13</td>
+<td>String getContextPath()返回request URI中指明的上下⽂路径</td>
+</tr>
+<tr>
+<td align="left">14</td>
+<td>String getHeader(String name)返回name指定的信息头</td>
+</tr>
+<tr>
+<td align="left">15</td>
+<td>String getMethod()返回此request中的HTTP⽅法，⽐如GET,，POST，或PUT</td>
+</tr>
+<tr>
+<td align="left">16</td>
+<td>String getParameter(String name)返回此request中name指定的参数，若不存在则返回null</td>
+</tr>
+<tr>
+<td align="left">17</td>
+<td>String getPathInfo()返回任何额外的与此request URL相关的路径</td>
+</tr>
+<tr>
+<td align="left">18</td>
+<td>String getProtocol()返回此request所使⽤的协议名和版本</td>
+</tr>
+<tr>
+<td align="left">19</td>
+<td>String getQueryString()返回此 request URL包含的查询字符串</td>
+</tr>
+<tr>
+<td align="left">20</td>
+<td>String getRemoteAddr()返回客户端的IP地址</td>
+</tr>
+<tr>
+<td align="left">21</td>
+<td>String getRemoteHost()返回客户端的完整名称</td>
+</tr>
+<tr>
+<td align="left">22</td>
+<td>String getRemoteUser()返回客户端通过登录认证的⽤户，若⽤户未认证则返回null</td>
+</tr>
+<tr>
+<td align="left">23</td>
+<td>String getRequestURI()返回request的URI</td>
+</tr>
+<tr>
+<td align="left">24</td>
+<td>String getRequestedSessionId()返回request指定的session ID</td>
+</tr>
+<tr>
+<td align="left">25</td>
+<td>String getServletPath()返回所请求的servlet路径</td>
+</tr>
+<tr>
+<td align="left">26</td>
+<td>String[] getParameterValues(String name)返回指定名称的参数的所有值，若不存在则返回null</td>
+</tr>
+<tr>
+<td align="left">27</td>
+<td>boolean isSecure()返回request是否使⽤了加密通道，⽐如HTTPS</td>
+</tr>
+<tr>
+<td align="left">28</td>
+<td>int getContentLength()返回request主体所包含的字节数，若未知的返回-1</td>
+</tr>
+<tr>
+<td align="left">29</td>
+<td>int getIntHeader(String name)返回指定名称的request信息头的值</td>
+</tr>
+<tr>
+<td align="left">30</td>
+<td>int getServerPort()返回服务器端⼝号</td>
+</tr>
+</tbody></table>
+<h3 id="3-5、-HttpServletResponse类"><a href="#3-5、-HttpServletResponse类" class="headerlink" title="3.5、 HttpServletResponse类"></a>3.5、 HttpServletResponse类</h3><table>
+<thead>
+<tr>
+<th>序号</th>
+<th>方法&amp;描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>String encodeRedirectURL(String url)对sendRedirect()⽅法使⽤的URL进⾏编码</td>
+</tr>
+<tr>
+<td>2</td>
+<td>String encodeURL(String url)将URL编码，回传包含Session ID的URL</td>
+</tr>
+<tr>
+<td>3</td>
+<td>boolean containsHeader(String name)返回指定的响应头是否存在</td>
+</tr>
+<tr>
+<td>4</td>
+<td>boolean isCommitted()返回响应是否已经提交到客户端</td>
+</tr>
+<tr>
+<td>5</td>
+<td>void addCookie(Cookie cookie)添加指定的cookie⾄响应中</td>
+</tr>
+<tr>
+<td>6</td>
+<td>void addDateHeader(String name, long date)添加指定名称的响应头和⽇期值</td>
+</tr>
+<tr>
+<td>7</td>
+<td>void addHeader(String name, String value)添加指定名称的响应头和值</td>
+</tr>
+<tr>
+<td>8</td>
+<td>void addIntHeader(String name, int value)添加指定名称的响应头和int值</td>
+</tr>
+<tr>
+<td>9</td>
+<td>void flushBuffer()将任何缓存中的内容写⼊客户端</td>
+</tr>
+<tr>
+<td>10</td>
+<td>void reset()清除任何缓存中的任何数据，包括状态码和各种响应头</td>
+</tr>
+<tr>
+<td>11</td>
+<td>void resetBuffer()清除基本的缓存数据，不包括响应头和状态码</td>
+</tr>
+<tr>
+<td>12</td>
+<td>void sendError(int sc)使⽤指定的状态码向客户端发送⼀个出错响应，然后清除缓存</td>
+</tr>
+<tr>
+<td>13</td>
+<td>void sendError(int sc, String msg)使⽤指定的状态码和消息向客户端发送⼀个出错响应</td>
+</tr>
+<tr>
+<td>14</td>
+<td>void sendRedirect(String location)使⽤指定的URL向客户端发送⼀个临时的间接响应</td>
+</tr>
+<tr>
+<td>15</td>
+<td>void setBufferSize(int size)设置响应体的缓存区⼤⼩</td>
+</tr>
+<tr>
+<td>16</td>
+<td>void setCharacterEncoding(String charset)指定响应的编码集（MIME字符集），例如UTF-8</td>
+</tr>
+<tr>
+<td>17</td>
+<td>void setContentLength(int len)指定HTTP servlets中响应的内容的⻓度，此⽅法⽤来设置 HTTP Content-Length 信息头</td>
+</tr>
+<tr>
+<td>18</td>
+<td>void setContentType(String type)设置响应的内容的类型，如果响应还未被提交的话</td>
+</tr>
+<tr>
+<td>19</td>
+<td>void setDateHeader(String name, long date)使⽤指定名称和⽇期设置响应头的名称和⽇期</td>
+</tr>
+<tr>
+<td>20</td>
+<td>void setHeader(String name, String value)使⽤指定名称和值设置响应头的名称和内容</td>
+</tr>
+<tr>
+<td>21</td>
+<td>void setIntHeader(String name, int value)指定 int 类型的值到 name 标头</td>
+</tr>
+<tr>
+<td>22</td>
+<td>void setLocale(Locale loc)设置响应的语⾔环境，如果响应尚未被提交的话</td>
+</tr>
+</tbody></table>
+<h2 id="4、MVC介绍"><a href="#4、MVC介绍" class="headerlink" title="4、MVC介绍"></a>4、MVC介绍</h2><figure class="highlight cos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs cos">MVC是Model-<span class="hljs-keyword">View</span>-Controller的简称，即模型-视图-控制器。是⼀种设计模式，它把应⽤程序分成三个核⼼模块：模型、视图、控制器，它们各⾃处理⾃⼰的任务。<br><br>模型是应⽤程序的主体部分，模型表示业务数据和业务逻辑。⼀个模型能为多个视图提供数据，由于应⽤于模型的代码只需写⼀次就可以被多个视图重⽤，所以提⾼了代码的可重⽤性。<br><br>视图是⽤户看到并与之交互的界⾯，视图向⽤户显示相关的数据、接受⽤户的输⼊、不进⾏任何实际的业务处理。<br><br>控制器接受⽤户的输⼊并调⽤模型和视图去完成⽤户的需求。控制器接收请求并决定调⽤哪个模型组件去处理请求，然后决定调⽤哪个视图来显示模型处理返回的数据<br></code></pre></td></tr></table></figure>
+
+<img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/MVC-1.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<h2 id="5、过滤器Filter介绍"><a href="#5、过滤器Filter介绍" class="headerlink" title="5、过滤器Filter介绍"></a>5、过滤器Filter介绍</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">可修复未授权、越权等。<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs css">·<span class="hljs-attribute">Filter</span> 的基本功能是对 Servlet 容器调⽤ Servlet 的过程进⾏拦截，从⽽在 Servlet 进⾏响应处理的前后实现⼀些特殊的功能。<br>·在 Servlet API 中定义了三个接⼝类来供开发⼈员编写<span class="hljs-attribute">Filter</span> 程序：<span class="hljs-attribute">Filter</span>, FilterChain, FilterConfig<br>·<span class="hljs-attribute">Filter</span> 程序是⼀个实现了 <span class="hljs-attribute">Filter</span> 接⼝的 Java 类，与 Servlet 程序相似，它由 Servlet 容器进⾏调⽤和执⾏<br>·<span class="hljs-attribute">Filter</span> 程序需要在 web<span class="hljs-selector-class">.xml</span> ⽂件中进⾏注册和设置它所能拦截的资源：<span class="hljs-attribute">Filter</span> 程序可以拦截 Jsp, Servlet, 不拦截静态图⽚⽂件和静态 <span class="hljs-selector-tag">html</span> ⽂件<br></code></pre></td></tr></table></figure>
+
+<img src="/2025/08/15/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E3%80%8C%E4%BA%8C%E3%80%8D-java-web%E5%9F%BA%E7%A1%80/filter-1.png" srcset="/img/loading.gif" lazyload class="" title="图片">
+
+<h3 id="5-1、filter接口"><a href="#5-1、filter接口" class="headerlink" title="5.1、filter接口"></a>5.1、filter接口</h3><h4 id="public-voic-init-FilterConfig-filterConfig-throws-ServletException"><a href="#public-voic-init-FilterConfig-filterConfig-throws-ServletException" class="headerlink" title="public voic init(FilterConfig filterConfig) throws ServletException"></a>public voic init(FilterConfig filterConfig) throws ServletException</h4><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-number">1</span>、在 Web 应⽤程序启动时，Web 服务器（Web 容器）将根据其 web.xml ⽂件的配置信息来创建每个注册的 <span class="hljs-keyword">Filter</span> 的实例对象，并将其保存在内存中。<br><span class="hljs-number">2</span>、Web 容器创建 <span class="hljs-keyword">Filter</span> 的实例对象后，将⽴即调⽤该<span class="hljs-keyword">Filter</span> 对象的 init ⽅法。init ⽅法在 <span class="hljs-keyword">Filter</span> ⽣命周期中仅被执⾏⼀次，Web 容器在调⽤ init ⽅法时，会传递⼀个包含<span class="hljs-keyword">Filter</span> 的配置和运⾏环境信息的 FilterConfig 对象。<br></code></pre></td></tr></table></figure>
+
+<h4 id="doFilter-ServletRequest-request-ServletResponse-response-FilterChain-chain-throws-java-io-IOException-ServletException："><a href="#doFilter-ServletRequest-request-ServletResponse-response-FilterChain-chain-throws-java-io-IOException-ServletException：" class="headerlink" title="doFilter(ServletRequest request,ServletResponse response, FilterChain chain)throws java.io.IOException,ServletException："></a>doFilter(ServletRequest request,ServletResponse response, FilterChain chain)throws java.io.IOException,ServletException：</h4><figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arcade">参数 request 和 response 为 Web 容器或 <span class="hljs-built_in">Filter</span> 链中上⼀个 <span class="hljs-built_in">Filter</span> 传递过来的请求和响应对象；参数 chain 为代表当前 <span class="hljs-built_in">Filter</span> 链的对象。<br></code></pre></td></tr></table></figure>
+
+<h4 id="destroy⽅法"><a href="#destroy⽅法" class="headerlink" title="destroy⽅法"></a>destroy⽅法</h4><figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arcade">该⽅法在 Web 容器卸载 <span class="hljs-built_in">Filter</span> 对象之前被调⽤，也仅执⾏⼀次。可以完成与 init ⽅法相反的功能，释放被该 <span class="hljs-built_in">Filter</span> 对象打开的资源，例如：关闭数据库连接和 IO 流。<br></code></pre></td></tr></table></figure>
+
+<h3 id="5-2、FilterConfig-接⼝"><a href="#5-2、FilterConfig-接⼝" class="headerlink" title="5.2、FilterConfig 接⼝"></a>5.2、FilterConfig 接⼝</h3><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs scss">javax<span class="hljs-selector-class">.servlet</span><span class="hljs-selector-class">.FilterConfig</span>接⼝：该接⼝类似于ServletConfig接⼝，由容器实现。Servlet规范将代表ServletContext 对象和 <span class="hljs-attribute">Filter</span> 的配置参数信息都封装在该对象中。Servlet 容器将其作为参数传⼊过滤器对象的<span class="hljs-built_in">init</span>()⽅法中。<br><br>String <span class="hljs-built_in">getFilterName</span>()：得到描述符中指定的过滤器的名字。<br><br>String <span class="hljs-built_in">getInitParameter</span>(String name)： 返回在部署描述中指定的名字为name的初始化参数的值。如果不存在返回null.<br><br>Enumeration <span class="hljs-built_in">getInitParameterNames</span>()：返回过滤器的所有初始化参数的名字的枚举集合。<br><br>public ServletContext <span class="hljs-built_in">getServletContext</span>()：返回Servlet上下⽂对象的引⽤。<br></code></pre></td></tr></table></figure>
+
+<h3 id="5-3、FilterChain接⼝"><a href="#5-3、FilterChain接⼝" class="headerlink" title="5.3、FilterChain接⼝"></a>5.3、FilterChain接⼝</h3><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs stylus">FilterChain接⼝：代表当前 Filter 链的对象。由容器实现，容器将其实例作为参数传⼊过滤器对象的<span class="hljs-built_in">doFilter</span>()⽅法中。过滤器对象使⽤FilterChain对象调⽤过滤器链中的下⼀个过滤器，如果该过滤器是链中昀后⼀个过滤器，那么将调⽤⽬标资源。<br><br><span class="hljs-function"><span class="hljs-title">doFilter</span><span class="hljs-params">(ServletRequest request,ServletResponse response)</span><span class="hljs-title">throws</span></span> java<span class="hljs-selector-class">.io</span>.IOException：调⽤该⽅法将使过滤器链中的下⼀个过滤器被调⽤。如果是昀后⼀个过滤器，会调⽤⽬标资源。<br></code></pre></td></tr></table></figure>
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" class="category-chain-item">Java代码审计</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" class="print-no-link">#代码审计</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Java代码审计基础知识「二」-java-web基础</div>
+      <div>http://aqiao-jashell.github.io/2025/08/15/Java代码审计基础知识「二」-java-web基础/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>CNAQ</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年8月15日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/07/04/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E6%80%BB%E7%BB%932-%E8%A1%A5%E5%85%85/" title="内网渗透总结2--补充">
+                        <span class="hidden-mobile">内网渗透总结2--补充</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
